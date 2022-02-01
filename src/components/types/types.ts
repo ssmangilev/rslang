@@ -7,6 +7,7 @@ enum EndpointsEnum {
   settings = "settings",
   signin = "signin",
 }
+<<<<<<< HEAD
 
 interface ILogin {
   message?: string;
@@ -15,6 +16,16 @@ interface ILogin {
   userId?: string;
   name?: string;
 }
+=======
+interface ILogin {
+  message: string;
+  token: string;
+  refreshToken: string;
+  userId: string;
+  name: string;
+}
+
+>>>>>>> ba231a0 (feat: basic types, which API returns, were added)
 interface ISettings {
   wordsPerDay: number;
   optional: undefined;
@@ -26,6 +37,7 @@ interface IStatistics {
 }
 
 interface IUser {
+<<<<<<< HEAD
   id?: string;
   name: string;
   email: string;
@@ -39,6 +51,11 @@ interface IUserExistsError {
 interface IUserEmailOrPasswordIncorrect {
   email?: string;
   password?: string;
+=======
+  id: string;
+  name: string;
+  email: string;
+>>>>>>> ba231a0 (feat: basic types, which API returns, were added)
 }
 
 interface IUserWord {
@@ -67,6 +84,7 @@ type UserLoginInformationType = {
   password: string;
 };
 
+<<<<<<< HEAD
 type DBErrorsType = {
   path: string[];
   message: string;
@@ -79,12 +97,15 @@ type UserServerError422Type = {
   };
 };
 
+=======
+>>>>>>> ba231a0 (feat: basic types, which API returns, were added)
 export {
   EndpointsEnum,
   ILogin,
   ISettings,
   IStatistics,
   IUser,
+<<<<<<< HEAD
   IUserExistsError,
   IUserEmailOrPasswordIncorrect,
   IUserWord,
@@ -92,4 +113,9 @@ export {
   DBErrorsType,
   UserLoginInformationType,
   UserServerError422Type,
+=======
+  IUserWord,
+  IWord,
+  UserLoginInformationType,
+>>>>>>> ba231a0 (feat: basic types, which API returns, were added)
 };
