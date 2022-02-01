@@ -29,7 +29,23 @@ class StartPage extends Control {
     );
     infoButton.node.onclick = () => this.onProjectInfo();
 
+    this.navGeneration();
+
     audioGmae(); /* An example of filling a class, it is also possible through methods */
+  }
+
+  private navGeneration() {
+    const checkInfBtn = document.getElementById("nav-info");
+    if (!checkInfBtn) {
+      const infoNavButton = new Control(
+        document.getElementById("nav"),
+        "button",
+        "nav-info",
+        "nav-info",
+        "О проекте"
+      );
+      infoNavButton.node.onclick = () => this.onProjectInfo();
+    }
   }
 }
 
