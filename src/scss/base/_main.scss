@@ -1,0 +1,16 @@
+.main-contaner{
+  flex: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.main-ui{
+  height: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  /* TODO: use better way to put background image*/
+  background: url("https://raw.githubusercontent.com/GrigoriyYav/stage1-tasks/assets/images/evening/03.jpg");
+}
