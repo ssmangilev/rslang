@@ -1,5 +1,41 @@
-#header{
+.header-ui{
   width: 100%;
-  height: 100px;
-  background-color: rgb(14, 122, 141);
+  height: 4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #ebebeb;
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+}
+
+.header__content{
+  height: auto;
+  width: 100%;
+  margin: 0 2rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-navigation-ui{
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  /* TODO: burger menu */
+}
+
+.header__logo-container{
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  /* TODO: logo */
+}
+
+.header__registration-container{
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  /* TODO: button for registration/profile */
 }
