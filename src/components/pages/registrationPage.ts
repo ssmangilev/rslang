@@ -1,4 +1,5 @@
 import Control from "../services/controls";
+import { Buttons } from "../configuration/buttons";
 
 class RegistrationPage extends Control {
   onStartPage!: () => void;
@@ -14,7 +15,13 @@ class RegistrationPage extends Control {
       main.append(mainContainer);
     }
 
-    const onStartPage = new Control(mainContainer, "button", "", "", "Отмена");
+    const onStartPage = new Control(
+      mainContainer,
+      "button",
+      "",
+      "",
+      `${Buttons.cancellation}`
+    );
     onStartPage.node.onclick = () => {
       this.onStartPage();
     };

@@ -1,4 +1,5 @@
 import Control from "../services/controls";
+import { Buttons } from "../configuration/buttons";
 
 class InfoPage extends Control {
   onStartPage!: () => void;
@@ -19,7 +20,7 @@ class InfoPage extends Control {
       "button",
       "",
       "",
-      "На главную"
+      `${Buttons.onStartPage}`
     );
     onStartPage.node.onclick = () => {
       this.onStartPage();

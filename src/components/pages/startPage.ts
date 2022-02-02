@@ -1,4 +1,5 @@
 import Control from "../services/controls";
+import { Buttons } from "../configuration/buttons";
 
 function audioGmae() {
   console.log("Пример дальнейшего выполнения страницы");
@@ -16,7 +17,7 @@ class StartPage extends Control {
       "button",
       "",
       "",
-      "Регистрация"
+      `${Buttons.onRegistration}`
     );
     registrButton.node.onclick = () => this.onRegistration();
 
@@ -25,7 +26,7 @@ class StartPage extends Control {
       "button",
       "",
       "",
-      "О проекте"
+      `${Buttons.onProjectInfo}`
     );
     infoButton.node.onclick = () => this.onProjectInfo();
 
@@ -42,7 +43,7 @@ class StartPage extends Control {
         "button",
         "nav-info",
         "nav-info",
-        "О проекте"
+        `${Buttons.onProjectInfo}`
       );
       infoNavButton.node.onclick = () => this.onProjectInfo();
     }
