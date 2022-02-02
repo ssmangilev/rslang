@@ -19,14 +19,15 @@ class Control<NodeType extends HTMLElement = HTMLElement> {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  destroy(parent: HTMLElement): void {
+  destroyСontent(parent: HTMLElement): void {
     while (parent.firstChild) {
       parent.removeChild(parent.firstChild);
     }
   }
-  /* destroy(): void {
+
+  destroyNode(): void {
     this.node.remove();
-  } */
+  }
 }
 
 export default Control;

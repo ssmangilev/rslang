@@ -12,11 +12,11 @@ class Application extends Control {
   private mainCycle() {
     const startPage = new StartPage();
     startPage.onRegistration = () => {
-      startPage.destroy(document.getElementById("main") as HTMLElement);
+      startPage.destroyСontent(document.getElementById("main") as HTMLElement);
       const registrationPage = new RegistrationPage();
 
       registrationPage.onStartPage = () => {
-        registrationPage.destroy(
+        registrationPage.destroyСontent(
           document.getElementById("main") as HTMLElement
         );
         this.mainCycle();
@@ -24,11 +24,11 @@ class Application extends Control {
     };
 
     startPage.onProjectInfo = () => {
-      startPage.destroy(document.getElementById("main") as HTMLElement);
+      startPage.destroyСontent(document.getElementById("main") as HTMLElement);
       const infoPage = new InfoPage();
 
       infoPage.onStartPage = () => {
-        infoPage.destroy(document.getElementById("main") as HTMLElement);
+        infoPage.destroyСontent(document.getElementById("main") as HTMLElement);
         this.mainCycle();
       };
     };
