@@ -1,7 +1,7 @@
 import Control from "../services/controls";
-import RegistrPage from "./registration";
-import StartPage from "./start-page";
-import InfoPage from "./project-Info";
+import RegistrationPage from "./registrationPage";
+import StartPage from "./startPage";
+import InfoPage from "./projectInfo";
 
 class Application extends Control {
   constructor() {
@@ -13,10 +13,12 @@ class Application extends Control {
     const startPage = new StartPage();
     startPage.onRegistration = () => {
       startPage.destroy(document.getElementById("main") as HTMLElement);
-      const registrPage = new RegistrPage();
+      const registrationPage = new RegistrationPage();
 
-      registrPage.onStartPage = () => {
-        registrPage.destroy(document.getElementById("main") as HTMLElement);
+      registrationPage.onStartPage = () => {
+        registrationPage.destroy(
+          document.getElementById("main") as HTMLElement
+        );
         this.mainCycle();
       };
     };

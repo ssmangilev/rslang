@@ -1,13 +1,13 @@
 import Control from "../services/controls";
 
-class RegistrPage extends Control {
+class RegistrationPage extends Control {
   onStartPage!: () => void;
 
   constructor() {
     super(null);
 
     const mainContainer = document.createElement("div");
-    mainContainer.classList.add("registr-container");
+    mainContainer.classList.add("registration-container");
 
     const main = document.getElementById("main");
     if (main) {
@@ -21,4 +21,4 @@ class RegistrPage extends Control {
   }
 }
 
-export default RegistrPage;
+export default RegistrationPage;
