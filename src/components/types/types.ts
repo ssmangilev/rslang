@@ -7,12 +7,13 @@ enum EndpointsEnum {
   settings = "settings",
   signin = "signin",
 }
+
 interface ILogin {
-  message: string;
+  message?: string;
   token: string;
   refreshToken: string;
-  userId: string;
-  name: string;
+  userId?: string;
+  name?: string;
 }
 
 interface ISettings {
@@ -26,9 +27,19 @@ interface IStatistics {
 }
 
 interface IUser {
-  id: string;
+  id?: string;
   name: string;
   email: string;
+  password?: string;
+}
+
+interface IUserExistsError {
+  create_user_form: string;
+}
+
+interface IUserEmailOrPasswordIncorrect {
+  email?: string;
+  password?: string;
 }
 
 interface IUserWord {
@@ -57,13 +68,30 @@ type UserLoginInformationType = {
   password: string;
 };
 
+
+type DBErrorsType = {
+  path: string[];
+  message: string;
+};
+
+type UserServerError422Type = {
+  error: {
+    status: string;
+    errors: DBErrorsType[];
+  };
+};
+
 export {
   EndpointsEnum,
   ILogin,
   ISettings,
   IStatistics,
   IUser,
+  IUserExistsError,
+  IUserEmailOrPasswordIncorrect,
   IUserWord,
   IWord,
+  DBErrorsType,
   UserLoginInformationType,
+  UserServerError422Type,
 };
