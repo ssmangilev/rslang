@@ -8,6 +8,7 @@ enum EndpointsEnum {
   signin = "signin",
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 interface ILogin {
   message?: string;
@@ -17,12 +18,23 @@ interface ILogin {
   name?: string;
 }
 =======
+=======
+>>>>>>> 6427683 (feat: basic API methods for User, Word, Login endpoints were added)
 interface ILogin {
   message: string;
   token: string;
   refreshToken: string;
   userId: string;
   name: string;
+=======
+
+interface ILogin {
+  message?: string;
+  token: string;
+  refreshToken: string;
+  userId?: string;
+  name?: string;
+>>>>>>> 3533a83 (feat: basic API methods for User, Word, Login endpoints were added)
 }
 
 >>>>>>> ba231a0 (feat: basic types, which API returns, were added)
@@ -37,6 +49,7 @@ interface IStatistics {
 }
 
 interface IUser {
+<<<<<<< HEAD
 <<<<<<< HEAD
   id?: string;
   name: string;
@@ -56,6 +69,26 @@ interface IUserEmailOrPasswordIncorrect {
   name: string;
   email: string;
 >>>>>>> ba231a0 (feat: basic types, which API returns, were added)
+=======
+  id: string;
+  name: string;
+  email: string;
+=======
+  id?: string;
+  name: string;
+  email: string;
+  password?: string;
+}
+
+interface IUserExistsError {
+  create_user_form: string;
+}
+
+interface IUserEmailOrPasswordIncorrect {
+  email?: string;
+  password?: string;
+>>>>>>> 3533a83 (feat: basic API methods for User, Word, Login endpoints were added)
+>>>>>>> 6427683 (feat: basic API methods for User, Word, Login endpoints were added)
 }
 
 interface IUserWord {
@@ -85,6 +118,10 @@ type UserLoginInformationType = {
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 6427683 (feat: basic API methods for User, Word, Login endpoints were added)
 type DBErrorsType = {
   path: string[];
   message: string;
@@ -97,14 +134,19 @@ type UserServerError422Type = {
   };
 };
 
+<<<<<<< HEAD
 =======
 >>>>>>> ba231a0 (feat: basic types, which API returns, were added)
+=======
+>>>>>>> 3533a83 (feat: basic API methods for User, Word, Login endpoints were added)
+>>>>>>> 6427683 (feat: basic API methods for User, Word, Login endpoints were added)
 export {
   EndpointsEnum,
   ILogin,
   ISettings,
   IStatistics,
   IUser,
+<<<<<<< HEAD
 <<<<<<< HEAD
   IUserExistsError,
   IUserEmailOrPasswordIncorrect,
@@ -118,4 +160,18 @@ export {
   IWord,
   UserLoginInformationType,
 >>>>>>> ba231a0 (feat: basic types, which API returns, were added)
+=======
+  IUserWord,
+  IWord,
+  UserLoginInformationType,
+=======
+  IUserExistsError,
+  IUserEmailOrPasswordIncorrect,
+  IUserWord,
+  IWord,
+  DBErrorsType,
+  UserLoginInformationType,
+  UserServerError422Type,
+>>>>>>> 3533a83 (feat: basic API methods for User, Word, Login endpoints were added)
+>>>>>>> 6427683 (feat: basic API methods for User, Word, Login endpoints were added)
 };
