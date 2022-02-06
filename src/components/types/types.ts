@@ -68,7 +68,6 @@ type UserLoginInformationType = {
   password: string;
 };
 
-
 type DBErrorsType = {
   path: string[];
   message: string;
