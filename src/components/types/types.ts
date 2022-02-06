@@ -15,7 +15,6 @@ interface ILogin {
   userId?: string;
   name?: string;
 }
-
 interface ISettings {
   wordsPerDay: number;
   optional: undefined;
