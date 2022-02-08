@@ -4,4 +4,5 @@ export const Buttons = {
   onRegistration: "Регистрация",
   onProjectInfo: "О проекте",
   cancellation: "Отмена",
+  onTextbookPage: "Учебник",
 };

@@ -10,6 +10,8 @@ class StartPage extends Control {
 
   onProjectInfo!: () => void;
 
+  onTextbookPage!: () => void;
+
   constructor() {
     super(null);
     const registrButton = new Control(
@@ -46,6 +48,15 @@ class StartPage extends Control {
         `${Buttons.onProjectInfo}`
       );
       infoNavButton.node.onclick = () => this.onProjectInfo();
+
+      const textbookNavButton = new Control(
+        document.getElementById("nav"),
+        "button",
+        "nav-textbook",
+        "nav-textbook",
+        `${Buttons.onTextbookPage}`
+      );
+      textbookNavButton.node.onclick = () => this.onTextbookPage();
     }
   }
 }

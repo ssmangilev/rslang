@@ -2,6 +2,7 @@ import Control from "../services/controls";
 import RegistrationPage from "./registrationPage";
 import StartPage from "./startPage";
 import InfoPage from "./projectInfo";
+import TextbookPage from "./textbookPage";
 
 class Application extends Control {
   constructor() {
@@ -29,6 +30,18 @@ class Application extends Control {
 
       infoPage.onStartPage = () => {
         infoPage.destroyСontent(document.getElementById("main") as HTMLElement);
+        this.mainCycle();
+      };
+    };
+
+    startPage.onTextbookPage = () => {
+      startPage.destroyСontent(document.getElementById("main") as HTMLElement);
+      const textbookPage = new TextbookPage();
+
+      textbookPage.onStartPage = () => {
+        textbookPage.destroyСontent(
+          document.getElementById("main") as HTMLElement
+        );
         this.mainCycle();
       };
     };
