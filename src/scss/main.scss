@@ -11,10 +11,12 @@
 /* Layout */
 @import 'layout/header';
 @import 'layout/footer';
+@import 'layout/nav';
 
 /* Components */
-@import 'layout/nav';
-@import 'components/buttons'
+@import 'components/buttons';
+@import 'components/modal-window';
+
 /* Pages */
 /* Themes */
 
