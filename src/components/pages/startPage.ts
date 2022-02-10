@@ -15,7 +15,7 @@ class StartPage extends Control {
     const registrButton = new Control(
       document.getElementById("main"),
       "button",
-      "",
+      "main__btn button",
       "",
       `${Buttons.onRegistration}`
     );
@@ -24,7 +24,7 @@ class StartPage extends Control {
     const infoButton = new Control(
       document.getElementById("main"),
       "button",
-      "",
+      "main__btn button",
       "",
       `${Buttons.onProjectInfo}`
     );
