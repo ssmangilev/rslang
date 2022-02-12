@@ -16,6 +16,37 @@ interface ILogin {
   name?: string;
 }
 
+interface IModalWindowElement {
+  name: string;
+  title: string;
+  placeholder: string;
+  type: string;
+  required: boolean;
+  minLength?: number;
+  maxLength?: number;
+}
+interface IModalWindow {
+  container: HTMLElement;
+  title: string;
+  id: string;
+  elements: IModalWindowElement[];
+  action: string;
+  saveCallback:
+    | ((
+        email: string,
+        name: string,
+        password: string
+      ) => Promise<
+        IUser | IUserExistsError | IUserEmailOrPasswordIncorrect | unknown
+      >)
+    | ((
+        email: string,
+        password: string
+      ) => Promise<ILogin | UserLoginInformationType | unknown>);
+  render(): void;
+  listen(): void;
+}
+
 interface ISettings {
   wordsPerDay: number;
   optional: undefined;
@@ -34,7 +65,7 @@ interface IUser {
 }
 
 interface IUserExistsError {
-  create_user_form: string;
+  email: string;
 }
 
 interface IUserEmailOrPasswordIncorrect {
@@ -63,26 +94,32 @@ interface IWord {
   textExampleTranslate: string;
 }
 
+type CallbackType<T> = (data: T) => void;
+
 type UserLoginInformationType = {
   email: string;
   password: string;
 };
 
-type DBErrorsType = {
+type DBErrorsSubType = {
   path: string[];
   message: string;
 };
 
+type DBErrorsType = {
+  status: string;
+  errors: DBErrorsSubType[];
+};
+
 type UserServerError422Type = {
-  error: {
-    status: string;
-    errors: DBErrorsType[];
-  };
+  error: DBErrorsType;
 };
 
 export {
   EndpointsEnum,
   ILogin,
+  IModalWindow,
+  IModalWindowElement,
   ISettings,
   IStatistics,
   IUser,
@@ -90,7 +127,9 @@ export {
   IUserEmailOrPasswordIncorrect,
   IUserWord,
   IWord,
+  CallbackType,
   DBErrorsType,
+  DBErrorsSubType,
   UserLoginInformationType,
   UserServerError422Type,
 };

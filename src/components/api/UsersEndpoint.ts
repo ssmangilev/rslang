@@ -6,6 +6,7 @@ import {
   IUserExistsError,
   UserLoginInformationType,
   ILogin,
+  DBErrorsSubType,
 } from "../types/types";
 import APIConstants from "./APIConstants";
 
@@ -23,11 +24,14 @@ export async function getUser(userId: string): Promise<IUser | void> {
   return data;
 }
 
+// eslint-disable-next-line consistent-return
 export async function createUser(
-  name: string,
   email: string,
+  name: string,
   password: string
-): Promise<IUser | IUserExistsError | IUserEmailOrPasswordIncorrect> {
+): Promise<
+  IUser | IUserExistsError | IUserEmailOrPasswordIncorrect | undefined
+> {
   try {
     const requestBody: IUser = {
       name,
@@ -40,31 +44,27 @@ export async function createUser(
       body: JSON.stringify(requestBody),
     });
     if (response.status === 417) {
-      return { create_user_form: "User with this email exists" };
+      return { email: "User with this email exists" } as IUserExistsError;
     }
-    const data: IUser = await response.json();
-    return data;
+    const data: IUser | UserServerError422Type = await response.json();
+    if (response.status === 422) {
+      const errorsPath: DBErrorsType = (data as UserServerError422Type).error;
+      const errors: DBErrorsSubType[] =
+        errorsPath.errors as unknown as DBErrorsSubType[];
+      const errorsData: IUserEmailOrPasswordIncorrect = {};
+      (errors as DBErrorsSubType[]).forEach((err: DBErrorsSubType): void => {
+        if (err.path[0] === "email") {
+          errorsData.email = err.message;
+        }
+        if (err.path[0] === "password") {
+          errorsData.password = err.message;
+        }
+      });
+      return errorsData as IUserEmailOrPasswordIncorrect;
+    }
+    return data as IUser;
   } catch (err) {
-    const formErrors: IUserEmailOrPasswordIncorrect = {};
-    if (typeof err === "object") {
-      if (
-        (err as UserServerError422Type).error &&
-        typeof (err as UserServerError422Type).error === "object" &&
-        (err as UserServerError422Type).error.errors
-      ) {
-        (err as UserServerError422Type).error.errors.forEach(
-          (e: DBErrorsType) => {
-            console.log(e);
-            if (e.path[0] === "email") {
-              formErrors.email = e.message;
-            } else if (e.path[0] === "password") {
-              formErrors.password = e.message;
-            }
-          }
-        );
-      }
-    }
-    return formErrors;
+    console.log(err);
   }
 }
 
@@ -88,7 +88,6 @@ export async function updateUser(
     const data: IUser = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
     return error;
   }
 }
