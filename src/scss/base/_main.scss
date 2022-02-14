@@ -9,8 +9,24 @@
   height: auto;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   /* TODO: use better way to put background image*/
   background: url("https://raw.githubusercontent.com/GrigoriyYav/stage1-tasks/assets/images/evening/03.jpg");
+}
+
+.main-ui__btns {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.main-ui__title {
+  margin-bottom: 80px;
+  position: relative;
+  font-size: 5rem;
+  font-family: Arial, sans-serif;
+  text-shadow: 1px 3px 0 #969696, 2px 7px 5px #aba8a8;
+  color: white;
 }

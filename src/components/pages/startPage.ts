@@ -13,7 +13,7 @@ class StartPage extends Control {
   constructor() {
     super(null);
     const registrButton = new Control(
-      document.getElementById("main"),
+      document.getElementById("main-btns"),
       "button",
       "main__btn button",
       "",
@@ -22,7 +22,7 @@ class StartPage extends Control {
     registrButton.node.onclick = () => this.onRegistration();
 
     const infoButton = new Control(
-      document.getElementById("main"),
+      document.getElementById("main-btns"),
       "button",
       "main__btn button",
       "",
@@ -30,7 +30,7 @@ class StartPage extends Control {
     );
     infoButton.node.onclick = () => this.onProjectInfo();
 
-    this.navGeneration();
+    // this.navGeneration();
 
     audioGmae(); /* An example of filling a class, it is also possible through methods */
   }
