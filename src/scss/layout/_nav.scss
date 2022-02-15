@@ -45,19 +45,19 @@
   &_ebook::before {
     background: url('../assets/svg/ebook-icon.svg');
   }
-  &_dict::before {
+  &_dictionary::before {
     background: url('../assets/svg/dict-icon.svg');
   }
-  &_games::before {
+  &_sprint::before {
     background: url('../assets/svg/games-icon.svg');
   }
-  &_stat::before {
+  &_statistics::before {
     background: url('../assets/svg/stat-icon.svg');
   }
   &_team::before {
     background: url('../assets/svg/team-icon.svg');
   }
-  &_feedback::before {
-    background: url('../assets/svg/feedback-icon.svg');
+  &_audioTask::before {
+    background: url('../assets/svg/headphones.svg');
   }
 }
