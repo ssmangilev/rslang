@@ -25,6 +25,7 @@ module.exports = {
     rules: {
       "no-debugger": "off",
       "no-console": 0,
+      "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }]
     },
   };
   

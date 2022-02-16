@@ -5,6 +5,7 @@ import ModalWindow from "../views/ModalWindow";
 import Buttons from "../configuration/buttons";
 import { createUser } from "../api/UsersEndpoint";
 import { logIn } from "../api/SigninEndpoint";
+import AppEventsService from "../services/appEventService";
 
 class Application extends Control {
   constructor() {
@@ -99,6 +100,9 @@ class Application extends Control {
         this.mainCycle();
       };
     };
+
+    const eventService = new AppEventsService();
+    eventService.addListeners();
   }
 }
 

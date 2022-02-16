@@ -1,5 +1,7 @@
 import Control from "../services/controls";
 import Buttons from "../configuration/buttons";
+import Links from "../configuration/links";
+import { createLink } from "../utils/utils";
 
 function audioGmae() {
   console.log("Пример дальнейшего выполнения страницы");
@@ -7,13 +9,13 @@ function audioGmae() {
 
 class StartPage extends Control {
   onRegistration!: () => void;
-
   onProjectInfo!: () => void;
+  createLink;
 
   constructor() {
     super(null);
     const registrButton = new Control(
-      document.getElementById("main"),
+      document.getElementById("main-btns"),
       "button",
       "main__btn button",
       "",
@@ -22,7 +24,7 @@ class StartPage extends Control {
     registrButton.node.onclick = () => this.onRegistration();
 
     const infoButton = new Control(
-      document.getElementById("main"),
+      document.getElementById("main-btns"),
       "button",
       "main__btn button",
       "",
@@ -30,23 +32,17 @@ class StartPage extends Control {
     );
     infoButton.node.onclick = () => this.onProjectInfo();
 
+    this.createLink = createLink;
+
     this.navGeneration();
 
     audioGmae(); /* An example of filling a class, it is also possible through methods */
   }
 
   private navGeneration() {
-    const checkInfBtn = document.getElementById("nav-info");
-    if (!checkInfBtn) {
-      const infoNavButton = new Control(
-        document.getElementById("nav"),
-        "button",
-        "nav-info",
-        "nav-info",
-        `${Buttons.onProjectInfo}`
-      );
-      infoNavButton.node.onclick = () => this.onProjectInfo();
-    }
+    Object.entries(Links).forEach((item) => {
+      this.createLink(item[0], item[1]);
+    });
   }
 }
 

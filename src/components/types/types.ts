@@ -115,6 +115,10 @@ type UserServerError422Type = {
   error: DBErrorsType;
 };
 
+interface MyObjectsInterface {
+  [key: string]: string;
+}
+
 export {
   EndpointsEnum,
   ILogin,
@@ -132,4 +136,5 @@ export {
   DBErrorsSubType,
   UserLoginInformationType,
   UserServerError422Type,
+  MyObjectsInterface,
 };
