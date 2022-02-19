@@ -3,6 +3,7 @@ import { Buttons } from "../configuration/buttons";
 import { cardsLoader } from "../services/cardsLoader";
 import { createTesxtbookSectionSelect } from "../controllers/textbookSectionSelect";
 import { textbookSectionsColors } from "../configuration/textbookSections";
+import { createTextbookPagesSelect } from "../controllers/textbookPageSelect";
 
 class TextbookPage extends Control {
   onStartPage!: () => void;
@@ -41,6 +42,8 @@ class TextbookPage extends Control {
     };
 
     createTesxtbookSectionSelect(textbookNavigation);
+
+    createTextbookPagesSelect(textbookNavigation);
 
     const textbookSectionSelect = document.getElementById(
       "textbook-section-select"
