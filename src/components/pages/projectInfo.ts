@@ -11,6 +11,7 @@ class InfoPage extends Control {
     mainContainer.classList.add("info-container");
 
     const main = document.getElementById("main");
+
     if (main) {
       main.append(mainContainer);
     }
@@ -18,7 +19,7 @@ class InfoPage extends Control {
     const onStartPage = new Control(
       mainContainer,
       "button",
-      "",
+      "button route-btn route-btn_main",
       "",
       `${Buttons.onStartPage}`
     );
