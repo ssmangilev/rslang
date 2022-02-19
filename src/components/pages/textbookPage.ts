@@ -1,6 +1,7 @@
 import Control from "../services/controls";
 import { Buttons } from "../configuration/buttons";
 import { cardsLoader } from "../services/cardsLoader";
+import { createTesxtbookSectionSelect } from "../controllers/tesxtbookSectionSelect";
 
 class TextbookPage extends Control {
   onStartPage!: () => void;
@@ -38,7 +39,22 @@ class TextbookPage extends Control {
       this.onStartPage();
     };
 
-    cardsLoader("1", "1");
+    createTesxtbookSectionSelect(textbookNavigation);
+
+    const tesxtbookSectionSelect = document.getElementById(
+      "tesxtbook-section-select"
+    ) as HTMLSelectElement;
+
+    cardsLoader("0", "0");
+    if (tesxtbookSectionSelect) {
+      tesxtbookSectionSelect.onchange = () => {
+        const index = tesxtbookSectionSelect.selectedIndex;
+        while (cardsContainer.firstChild) {
+          cardsContainer.removeChild(cardsContainer.firstChild);
+        }
+        cardsLoader(`${index}`, "1");
+      };
+    }
   }
 }
 
