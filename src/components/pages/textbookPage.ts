@@ -1,7 +1,8 @@
 import Control from "../services/controls";
 import { Buttons } from "../configuration/buttons";
 import { cardsLoader } from "../services/cardsLoader";
-import { createTesxtbookSectionSelect } from "../controllers/tesxtbookSectionSelect";
+import { createTesxtbookSectionSelect } from "../controllers/textbookSectionSelect";
+import { textbookSectionsColors } from "../configuration/textbookSections";
 
 class TextbookPage extends Control {
   onStartPage!: () => void;
@@ -41,18 +42,37 @@ class TextbookPage extends Control {
 
     createTesxtbookSectionSelect(textbookNavigation);
 
-    const tesxtbookSectionSelect = document.getElementById(
-      "tesxtbook-section-select"
+    const textbookSectionSelect = document.getElementById(
+      "textbook-section-select"
     ) as HTMLSelectElement;
 
-    cardsLoader("0", "0");
-    if (tesxtbookSectionSelect) {
-      tesxtbookSectionSelect.onchange = () => {
-        const index = tesxtbookSectionSelect.selectedIndex;
+    if (
+      !localStorage.getItem("textbookSection") ||
+      localStorage.getItem("textbookSection") === "0"
+    ) {
+      cardsLoader("0", "0");
+      textbookSectionSelect.style.background = textbookSectionsColors["0"];
+    } else {
+      cardsLoader(`${localStorage.getItem("textbookSection")}`, "0");
+      textbookSectionSelect.selectedIndex = localStorage.getItem(
+        "textbookSection"
+      ) as unknown as number;
+      textbookSectionSelect.style.background =
+        textbookSectionsColors[
+          localStorage.getItem("textbookSection") as unknown as number
+        ];
+    }
+
+    if (textbookSectionSelect) {
+      textbookSectionSelect.onchange = () => {
+        const index = textbookSectionSelect.selectedIndex;
+        textbookSectionSelect.style.background = textbookSectionsColors[index];
         while (cardsContainer.firstChild) {
           cardsContainer.removeChild(cardsContainer.firstChild);
         }
-        cardsLoader(`${index}`, "1");
+        cardsLoader(`${index}`, "0");
+        localStorage.setItem("textbookSection", `${index}`);
+        /* localStorage.setItem('textbookPage', "1"); */
       };
     }
   }
