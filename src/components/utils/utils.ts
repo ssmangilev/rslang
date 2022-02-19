@@ -10,7 +10,7 @@ export function createLink(linkName: string, linkText: string) {
     document.getElementById("nav"),
     "a",
     "side-navigation__link",
-    "",
+    `${linkName}Page`,
     `${Links.linkName}`
   );
   if (linkName === "main") {

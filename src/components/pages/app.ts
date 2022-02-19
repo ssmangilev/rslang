@@ -1,6 +1,7 @@
 import Control from "../services/controls";
 import StartPage from "./startPage";
 import InfoPage from "./projectInfo";
+import AboutPage from "./aboutTeam";
 import ModalWindow from "../views/ModalWindow";
 import Buttons from "../configuration/buttons";
 import { createUser } from "../api/UsersEndpoint";
@@ -97,6 +98,20 @@ class Application extends Control {
 
       infoPage.onStartPage = () => {
         infoPage.destroyСontent(document.getElementById("main") as HTMLElement);
+        infoPage.destroyСontent(document.getElementById("nav") as HTMLElement);
+        this.mainCycle();
+      };
+    };
+
+    startPage.onAboutPage = () => {
+      startPage.destroyСontent(document.getElementById("main") as HTMLElement);
+      const aboutTeam = new AboutPage();
+
+      aboutTeam.onStartPage = () => {
+        aboutTeam.destroyСontent(
+          document.getElementById("main") as HTMLElement
+        );
+        aboutTeam.destroyСontent(document.getElementById("nav") as HTMLElement);
         this.mainCycle();
       };
     };
