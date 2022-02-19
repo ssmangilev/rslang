@@ -51,6 +51,7 @@ interface IWord {
   id: string;
   group: number;
   page: number;
+  word: string;
   image: string;
   audio: string;
   audioMeaning: string;
