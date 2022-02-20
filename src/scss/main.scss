@@ -11,13 +11,16 @@
 /* Layout */
 @import 'layout/header';
 @import 'layout/footer';
+@import 'layout/nav';
+@import 'layout/projectInfo.scss';
 @import 'layout/textbook';
 
 /* Components */
-@import 'layout/nav';
 @import 'components/buttons';
 @import 'components/textbookSectionSelect';
 @import 'components/textbookPageSelect';
+@import 'components/modal-window';
+
 /* Pages */
 /* Themes */
 

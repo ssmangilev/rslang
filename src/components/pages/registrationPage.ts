@@ -1,5 +1,5 @@
 import Control from "../services/controls";
-import { Buttons } from "../configuration/buttons";
+import Buttons from "../configuration/buttons";
 
 class RegistrationPage extends Control {
   onStartPage!: () => void;
