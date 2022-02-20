@@ -1,6 +1,7 @@
 import Control from "../services/controls";
 import StartPage from "./startPage";
 import InfoPage from "./projectInfo";
+import TextbookPage from "./textbookPage";
 import AboutPage from "./aboutTeam";
 import ModalWindow from "../views/ModalWindow";
 import Buttons from "../configuration/buttons";
@@ -116,8 +117,22 @@ class Application extends Control {
       };
     };
 
+
+    startPage.onTextbookPage = () => {
+      startPage.destroyСontent(document.getElementById("main") as HTMLElement);
+      const textbookPage = new TextbookPage();
+
+      textbookPage.onStartPage = () => {
+        textbookPage.destroyСontent(
+          document.getElementById("main") as HTMLElement
+        );
+        this.mainCycle();
+      };
+    };
+    
     const eventService = new AppEventsService();
     eventService.addListeners();
+
   }
 }
 

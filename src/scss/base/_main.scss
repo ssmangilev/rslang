@@ -14,6 +14,8 @@
   justify-content: center;
   /* TODO: use better way to put background image*/
   background: url("https://raw.githubusercontent.com/GrigoriyYav/stage1-tasks/assets/images/evening/03.jpg");
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 .main-ui__btns {
