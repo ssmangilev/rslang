@@ -141,6 +141,7 @@ export default class ModalWindow implements IModalWindow {
               alertSuccess.style.display = "none";
             }, 3000);
             modalContainer.style.display = "none";
+            window.location.reload();
           } else {
             this.elements.forEach((el: IModalWindowElement): void => {
               if (
@@ -185,6 +186,7 @@ export default class ModalWindow implements IModalWindow {
               alertSuccess.style.display = "none";
             }, 3000);
             modalContainer.style.display = "none";
+            window.location.reload();
           } else {
             this.elements.forEach((el: IModalWindowElement): void => {
               if (loginData && Object.keys(loginData).indexOf(el.name) !== -1) {

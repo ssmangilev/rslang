@@ -8,6 +8,10 @@ import { createTextbookPagesSelect } from "../controllers/textbookPageSelect";
 class TextbookPage extends Control {
   onStartPage!: () => void;
 
+  onSprintPage!: () => void;
+
+  onAudioCallPage!: () => void;
+
   constructor() {
     super(null);
 
@@ -37,9 +41,31 @@ class TextbookPage extends Control {
       "",
       `${Buttons.onStartPage}`
     );
+
+    const onSprintPage = new Control(
+      textbookNavigation,
+      "button",
+      "sprint-button-ebook",
+      "sprint-button-ebook",
+      `${Buttons.onSprintPage}`,
+      true
+    );
+    const onAudioCallPage = new Control(
+      textbookNavigation,
+      "button",
+      "audiocall-button-ebook",
+      "audiocall-button-ebook",
+      `${Buttons.onAudioCallPage}`,
+      true
+    );
+
     onStartPage.node.onclick = () => {
       this.onStartPage();
     };
+
+    onSprintPage.node.onclick = () => this.onSprintPage();
+
+    onAudioCallPage.node.onload = () => this.onAudioCallPage();
 
     createTesxtbookSectionSelect(textbookNavigation);
 
