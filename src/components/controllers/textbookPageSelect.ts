@@ -9,7 +9,15 @@ function updateSelcetPage(number: number) {
       cardsContainer.removeChild(cardsContainer.firstChild);
     }
   }
-  cardsLoader(`${localStorage.getItem("textbookSection")}`, `${number}`);
+  if (
+    !localStorage.getItem("textbookSection") ||
+    localStorage.getItem("textbookSection") === "0"
+  ) {
+    cardsLoader("0", `${number}`);
+  } else {
+    cardsLoader(`${localStorage.getItem("textbookSection")}`, `${number}`);
+  }
+
   localStorage.setItem("textbookPage", `${number}`);
 }
 
