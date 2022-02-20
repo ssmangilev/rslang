@@ -8,6 +8,47 @@ enum EndpointsEnum {
   signin = "signin",
 }
 
+enum GamesEnum {
+  sprint = "sprint",
+  audiocall = "audiocall",
+}
+
+enum GameDifficulty {
+  easiest = "1",
+  easy = "2",
+  moreThenEasy = "3",
+  normal = "4",
+  hard = "5",
+  hardest = "6",
+}
+
+interface IGame {
+  container: HTMLElement;
+  group?: number;
+  page?: number;
+  type: GamesEnum.sprint | GamesEnum.audiocall;
+  renderDifficulty(): void;
+  renderTitle(): void;
+  renderTimer(): void;
+  generateQuestions(): Promise<void>;
+  renderQuestion(question: IQuestion): void;
+  renderSummary(answers: IQuestion[]): void;
+  startGame(): void;
+  render(): Promise<void>;
+}
+
+interface IGameSprint {
+  container: HTMLElement;
+  questions: IQuestion[];
+  render(): void;
+}
+
+interface IGameAudioCall {
+  containter: HTMLElement;
+  questions: IQuestion;
+  render(): void;
+}
+
 interface ILogin {
   message?: string;
   token: string;
@@ -52,9 +93,32 @@ interface ISettings {
   optional: undefined;
 }
 
+interface IFullStatistic {
+  gameStatistic: IGameStatistics;
+  wordStatistic: undefined;
+}
+
+interface IGameFullStatistics {
+  correctAnswers: number;
+  lastChanged: string;
+  learnedWords: number;
+  longestSeries: number;
+  wrongAnswers: number;
+}
+interface IGameStatistics {
+  audioCall: IGameFullStatistics;
+  sprint: IGameFullStatistics;
+}
+
 interface IStatistics {
   learnedWords: number;
-  optional: undefined;
+  optional: IFullStatistic;
+}
+
+interface IQuestion {
+  question: string;
+  rightAnswer: IWord;
+  answers: IWord[];
 }
 
 interface IUser {
@@ -73,13 +137,26 @@ interface IUserEmailOrPasswordIncorrect {
   password?: string;
 }
 
+interface IWordInGame {
+  right: number;
+  rightInRow: number;
+  wrong: number;
+}
+
+interface IUserWordDetail {
+  isHard?: boolean;
+  newWord?: Date;
+  sprint?: IWordInGame;
+  audioCall?: IWordInGame;
+}
 interface IUserWord {
   difficulty: string;
-  optional: undefined;
+  optional: IUserWordDetail | undefined;
 }
 
 interface IWord {
   id: string;
+  word: string;
   group: number;
   page: number;
   image: string;
@@ -117,11 +194,17 @@ type UserServerError422Type = {
 
 export {
   EndpointsEnum,
+  GameDifficulty,
+  GamesEnum,
+  IGame,
+  IGameAudioCall,
+  IGameSprint,
   ILogin,
   IModalWindow,
   IModalWindowElement,
   ISettings,
   IStatistics,
+  IQuestion,
   IUser,
   IUserExistsError,
   IUserEmailOrPasswordIncorrect,
