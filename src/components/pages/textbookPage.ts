@@ -97,8 +97,12 @@ class TextbookPage extends Control {
         while (cardsContainer.firstChild) {
           cardsContainer.removeChild(cardsContainer.firstChild);
         }
-        cardsLoader(`${sectionIndex}`, `${page}`);
+        cardsLoader(`${sectionIndex}`, "0");
         localStorage.setItem("textbookSection", `${sectionIndex}`);
+        if (textbookPagesSelect) {
+          localStorage.setItem("textbookPage", `${0}`);
+          textbookPagesSelect.selectedIndex = 0;
+        }
       };
     }
 
