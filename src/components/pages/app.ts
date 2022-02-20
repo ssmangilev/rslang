@@ -125,6 +125,9 @@ class Application extends Control {
         textbookPage.destroyСontent(
           document.getElementById("main") as HTMLElement
         );
+        textbookPage.destroyСontent(
+          document.getElementById("nav") as HTMLElement
+        );
         this.mainCycle();
       };
     };
