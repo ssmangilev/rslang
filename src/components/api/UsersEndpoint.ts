@@ -9,6 +9,8 @@ import {
   DBErrorsSubType,
   IUserWord,
   IStatistics,
+  IAggregatedWords,
+  IWord,
 } from "../types/types";
 import APIConstants from "./APIConstants";
 
@@ -122,7 +124,7 @@ export async function getUserWord(
   try {
     const response: Response = await fetch(
       `
-    ${APIConstants.usersEndpoint}/${userId}/${wordId}`,
+    ${APIConstants.usersEndpoint}/${userId}/words/${wordId}`,
       {
         method: "GET",
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
@@ -282,6 +284,82 @@ export async function updateUserStatistics(
   }
 }
 
+async function getUserNewWordsIds(userId: string): Promise<string[] | unknown> {
+  const WORDS_PER_PAGE = 3600;
+  const filter = `{"$and":[{"userWord":{"$ne": null}, "userWord.optional.newWord":{"$ne": null}}]}`;
+  try {
+    const response: Response = await fetch(
+      `${APIConstants.usersEndpoint}/users/${userId}/aggregatedWords?wordsPerPage=${WORDS_PER_PAGE}&filter=${filter}`,
+      {
+        method: "GET",
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      getUserNewWordsIds(userId);
+    }
+    const data: IAggregatedWords[] = await response.json();
+    const ids: string[] =
+      data[0].paginatedResults?.map((word: IWord): string => word.id) || [];
+    return ids;
+  } catch (error) {
+    return error;
+  }
+}
+
+async function getUserLearnedWordsIds(
+  userId: string
+): Promise<string[] | unknown> {
+  const WORDS_PER_PAGE = 3600;
+  const filter = `{"$and":[{"userWord":{"$ne": null}, "userWord.difficulty":"easy"}]}`;
+  try {
+    const response: Response = await fetch(
+      `${APIConstants.usersEndpoint}/users/${userId}/aggregatedWords?wordsPerPage=${WORDS_PER_PAGE}&filter=${filter}`,
+      {
+        method: "GET",
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      getUserLearnedWordsIds(userId);
+    }
+    const data: IAggregatedWords[] = await response.json();
+    const ids: string[] =
+      data[0].paginatedResults?.map((word: IWord): string => word.id) || [];
+    return ids;
+  } catch (error) {
+    return error;
+  }
+}
+
+async function getUserHardWordsIds(
+  userId: string
+): Promise<string[] | unknown> {
+  const WORDS_PER_PAGE = 3600;
+  const filter = `{"$and":[{"userWord":{"$ne": null}, "userWord.difficulty":"hard"}]}`;
+  try {
+    const response: Response = await fetch(
+      `${APIConstants.usersEndpoint}/users/${userId}/aggregatedWords?wordsPerPage=${WORDS_PER_PAGE}&filter=${filter}`,
+      {
+        method: "GET",
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      getUserHardWordsIds(userId);
+    }
+    const data: IAggregatedWords[] = await response.json();
+    const ids: string[] =
+      data[0].paginatedResults?.map((word: IWord): string => word.id) || [];
+    return ids;
+  } catch (error) {
+    return error;
+  }
+}
+
 export default {
   getUser,
   createUser,
@@ -294,4 +372,7 @@ export default {
   getUserWords,
   getUserStatistics,
   updateUserStatistics,
+  getUserNewWordsIds,
+  getUserLearnedWordsIds,
+  getUserHardWordsIds,
 };

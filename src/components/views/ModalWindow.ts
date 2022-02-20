@@ -212,6 +212,9 @@ export default class ModalWindow implements IModalWindow {
   }
 
   render(): void {
+    if (document.getElementById(this.id)) {
+      return;
+    }
     const modalContainer: HTMLElement = document.createElement("div");
     modalContainer.id = this.id;
     modalContainer.className = "modal";

@@ -1,6 +1,6 @@
 import { EndpointsEnum } from "../types/types";
 
-const BACKEND_ADDRESS = `https://rslangbackend.herokuapp.com`;
+export const BACKEND_ADDRESS = `https://rslangbackend.herokuapp.com`;
 const WORDS_ENDPOINT = `${BACKEND_ADDRESS}/${EndpointsEnum.words}`;
 const USERS_ENDPOINT = `${BACKEND_ADDRESS}/${EndpointsEnum.users}`;
 const SIGNIN_ENDPOINT = `${BACKEND_ADDRESS}/${EndpointsEnum.signin}`;

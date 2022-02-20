@@ -32,7 +32,7 @@ interface IGame {
   renderTimer(): void;
   generateQuestions(): Promise<void>;
   renderQuestion(question: IQuestion): void;
-  renderSummary(answers: IQuestion[]): void;
+  renderSummary(rightAnswers: IQuestion[], wrongAnswers: IQuestion[]): void;
   startGame(): void;
   render(): Promise<void>;
 }
@@ -145,7 +145,7 @@ interface IWordInGame {
 
 interface IUserWordDetail {
   isHard?: boolean;
-  newWord?: Date;
+  newWord?: string;
   sprint?: IWordInGame;
   audioCall?: IWordInGame;
 }
@@ -154,9 +154,13 @@ interface IUserWord {
   optional: IUserWordDetail | undefined;
 }
 
+interface IAggregatedWords {
+  paginatedResults: IWord[] | undefined;
+  totalCount: string[] | undefined;
+}
+
 interface IWord {
   id: string;
-  word: string;
   group: number;
   page: number;
   image: string;
@@ -214,6 +218,7 @@ export {
   IUserEmailOrPasswordIncorrect,
   IUserWord,
   IWord,
+  IAggregatedWords,
   CallbackType,
   DBErrorsType,
   DBErrorsSubType,

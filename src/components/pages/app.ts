@@ -1,13 +1,15 @@
 import Control from "../services/controls";
-import StartPage from "./startPage";
 import InfoPage from "./projectInfo";
 import TextbookPage from "./textbookPage";
+import StartPage from "./startPage";
 import AboutPage from "./aboutTeam";
 import ModalWindow from "../views/ModalWindow";
 import Buttons from "../configuration/buttons";
 import { createUser } from "../api/UsersEndpoint";
 import { logIn } from "../api/SigninEndpoint";
 import AppEventsService from "../services/appEventService";
+import SprintPage from "./Sprintpage";
+import AudioCallPage from "./AudioCallPage";
 
 class Application extends Control {
   constructor() {
@@ -134,6 +136,14 @@ class Application extends Control {
 
     const eventService = new AppEventsService();
     eventService.addListeners();
+    startPage.onSprint = () => {
+      startPage.destroyСontent(document.getElementById("main") as HTMLElement);
+      const sprintPage = new SprintPage();
+    };
+    startPage.onAudioCall = () => {
+      startPage.destroyСontent(document.getElementById("main") as HTMLElement);
+      const audioCallPage = new AudioCallPage();
+    };
   }
 }
 
