@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { getWords } from "../api/WordsEndpoint";
 import { BACKEND_ADDRESS } from "../api/APIConstants";
 import {

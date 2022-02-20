@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Control from "../services/controls";
 import InfoPage from "./projectInfo";
 import TextbookPage from "./textbookPage";
