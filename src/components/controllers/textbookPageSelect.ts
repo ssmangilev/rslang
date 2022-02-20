@@ -1,5 +1,17 @@
 /* eslint-disable import/prefer-default-export */
 import { textbookPages } from "../configuration/textbookPages";
+import { cardsLoader } from "../services/cardsLoader";
+
+function updateSelcetPage(number: number) {
+  const cardsContainer = document.getElementById("cards-container");
+  if (cardsContainer) {
+    while (cardsContainer.firstChild) {
+      cardsContainer.removeChild(cardsContainer.firstChild);
+    }
+  }
+  cardsLoader(`${localStorage.getItem("textbookSection")}`, `${number}`);
+  localStorage.setItem("textbookPage", `${number}`);
+}
 
 function createTextbookPagesSelect(parent: HTMLElement) {
   const textbookSelectContainer = document.createElement("div");
@@ -29,6 +41,36 @@ function createTextbookPagesSelect(parent: HTMLElement) {
     option.text = textbookPages[i];
     textbookPagesSelect.appendChild(option);
   }
+
+  let number = 0;
+  const min = 0;
+  const max = textbookPages.length - 1;
+
+  textbookButtonMinusPage.onclick = () => {
+    number = textbookPagesSelect.selectedIndex;
+    if (number > min) {
+      number -= 1;
+      textbookPagesSelect.selectedIndex = number;
+    }
+    if (
+      number !== (localStorage.getItem("textbookPage") as unknown as number)
+    ) {
+      updateSelcetPage(number);
+    }
+  };
+
+  textbookButtonPlusPage.onclick = () => {
+    number = textbookPagesSelect.selectedIndex;
+    if (number < max) {
+      number += 1;
+      textbookPagesSelect.selectedIndex = number;
+    }
+    if (
+      number !== (localStorage.getItem("textbookPage") as unknown as number)
+    ) {
+      updateSelcetPage(number);
+    }
+  };
 }
 
 export { createTextbookPagesSelect };
