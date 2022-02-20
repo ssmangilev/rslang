@@ -165,6 +165,7 @@ interface IWord {
   page: number;
   image: string;
   audio: string;
+  word: string;
   audioMeaning: string;
   audioExample: string;
   textMeaning: string;
