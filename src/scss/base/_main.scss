@@ -16,6 +16,15 @@
   background: url("https://raw.githubusercontent.com/GrigoriyYav/stage1-tasks/assets/images/evening/03.jpg");
   background-size: cover;
   background-attachment: fixed;
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0,0,0,.3);
+  }
 }
 
 .main-ui__btns {

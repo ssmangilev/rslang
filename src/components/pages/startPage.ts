@@ -48,11 +48,6 @@ class StartPage extends Control {
       this.onTextbookPage();
     });
     (
-      document.querySelector(".side-navigation__link_dictionary") as HTMLElement
-    ).addEventListener("click", () => {
-      console.log(1);
-    });
-    (
       document.querySelector(".side-navigation__link_sprint") as HTMLElement
     ).addEventListener("click", () => {
       console.log(1);
