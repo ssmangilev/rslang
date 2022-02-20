@@ -284,12 +284,14 @@ export async function updateUserStatistics(
   }
 }
 
-async function getUserNewWordsIds(userId: string): Promise<string[] | unknown> {
+export async function getUserNewWordsIds(
+  userId: string
+): Promise<string[] | unknown> {
   const WORDS_PER_PAGE = 3600;
   const filter = `{"$and":[{"userWord":{"$ne": null}, "userWord.optional.newWord":{"$ne": null}}]}`;
   try {
     const response: Response = await fetch(
-      `${APIConstants.usersEndpoint}/users/${userId}/aggregatedWords?wordsPerPage=${WORDS_PER_PAGE}&filter=${filter}`,
+      `${APIConstants.usersEndpoint}/${userId}/aggregatedWords?wordsPerPage=${WORDS_PER_PAGE}&filter=${filter}`,
       {
         method: "GET",
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
@@ -308,14 +310,14 @@ async function getUserNewWordsIds(userId: string): Promise<string[] | unknown> {
   }
 }
 
-async function getUserLearnedWordsIds(
+export async function getUserLearnedWordsIds(
   userId: string
 ): Promise<string[] | unknown> {
   const WORDS_PER_PAGE = 3600;
   const filter = `{"$and":[{"userWord":{"$ne": null}, "userWord.difficulty":"easy"}]}`;
   try {
     const response: Response = await fetch(
-      `${APIConstants.usersEndpoint}/users/${userId}/aggregatedWords?wordsPerPage=${WORDS_PER_PAGE}&filter=${filter}`,
+      `${APIConstants.usersEndpoint}/${userId}/aggregatedWords?wordsPerPage=${WORDS_PER_PAGE}&filter=${filter}`,
       {
         method: "GET",
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
@@ -334,14 +336,14 @@ async function getUserLearnedWordsIds(
   }
 }
 
-async function getUserHardWordsIds(
+export async function getUserHardWordsIds(
   userId: string
 ): Promise<string[] | unknown> {
   const WORDS_PER_PAGE = 3600;
   const filter = `{"$and":[{"userWord":{"$ne": null}, "userWord.difficulty":"hard"}]}`;
   try {
     const response: Response = await fetch(
-      `${APIConstants.usersEndpoint}/users/${userId}/aggregatedWords?wordsPerPage=${WORDS_PER_PAGE}&filter=${filter}`,
+      `${APIConstants.usersEndpoint}/${userId}/aggregatedWords?wordsPerPage=${WORDS_PER_PAGE}&filter=${filter}`,
       {
         method: "GET",
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,

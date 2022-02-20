@@ -205,11 +205,31 @@
 
 .game-word-results-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .game-results {
     background-color: #fff;
     width: 100%;
     height: 100%;
+    overflow-y: scroll;
+    z-index: 2000;
+}
+
+.game-word-results-audio {
+    background: url("../assets/svg/headphones.svg");
+    width: 20px;
+    height: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.game-word-results-description {
+    margin-right: 20px;
+}
+
+.game-word-results-description {
+    font-weight: 600;
+    color: blue;
 }

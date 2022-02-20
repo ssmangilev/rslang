@@ -9,6 +9,7 @@ import {
   IWord,
 } from "../types/types";
 import { getLoaderSVG, generateRandomNumber } from "../utils/utils";
+import { getUserNewWordsIds } from "../api/UsersEndpoint";
 
 export default class GameView implements IGame {
   group?: number;
@@ -39,6 +40,8 @@ export default class GameView implements IGame {
 
   longestRightSeries: number;
 
+  userNewWords: string[] | undefined | unknown;
+
   constructor(
     container: HTMLElement,
     type: GamesEnum.audiocall | GamesEnum.sprint,
@@ -63,6 +66,7 @@ export default class GameView implements IGame {
     this.longestRightSeries = 0;
     this.rightAnswersArray = [];
     this.wrongAnswersArray = [];
+    this.userNewWords = [];
   }
 
   renderTitle(): void {
@@ -156,6 +160,11 @@ export default class GameView implements IGame {
           getWords(this.group?.toString(), randomPage.toString())
         );
       }
+    }
+    if (localStorage.getItem("userId")) {
+      this.userNewWords = await getUserNewWordsIds(
+        localStorage.getItem("userId") || ""
+      );
     }
     const result = await Promise.all(dataForLoading);
     result.forEach((element: IWord[]): void => {
@@ -298,6 +307,11 @@ export default class GameView implements IGame {
             if (this.questionIndex < this.generatedQuestions.length) {
               this.renderQuestion(this.generatedQuestions[this.questionIndex]);
             } else {
+              const timerContainer: HTMLElement = document.getElementById(
+                `${this.type}-timer-container`
+              ) as HTMLElement;
+              timerContainer.style.display = "none";
+              this.time = 0;
               this.renderSummary();
             }
           }
@@ -371,6 +385,13 @@ export default class GameView implements IGame {
                   this.generatedQuestions[this.questionIndex]
                 );
               } else {
+                const timerContainer: HTMLElement = document.getElementById(
+                  `${this.type}-timer-container`
+                ) as HTMLElement;
+                if (timerContainer) {
+                  timerContainer.style.display = "none";
+                }
+                this.time = 0;
                 this.renderSummary();
               }
             }
@@ -448,6 +469,7 @@ export default class GameView implements IGame {
         const audio = new Audio(`${BACKEND_ADDRESS}/${word.audio}`);
         wordAudio.id = `${word.id}-results-audio`;
         wordAudio.className = "game-word-results-audio";
+        wordAudio.addEventListener("click", () => audio.play());
         const wordDescription: HTMLElement = document.createElement("div");
         wordDescription.id = `${word.id}-results-description`;
         wordDescription.className = "game-word-results-description";
@@ -472,6 +494,7 @@ export default class GameView implements IGame {
         const audio = new Audio(`${BACKEND_ADDRESS}/${word.audio}`);
         wordAudio.id = `${word.id}-results-audio`;
         wordAudio.className = "game-word-results-audio";
+        wordAudio.addEventListener("click", () => audio.play());
         const wordDescription: HTMLElement = document.createElement("div");
         wordDescription.id = `${word.id}-results-description`;
         wordDescription.className = "game-word-results-description";
@@ -505,13 +528,14 @@ export default class GameView implements IGame {
     timerContainer.id = `${this.type}-timer-container`;
     timerContainer.className = "timer-container";
     timerContainer.innerHTML = `${this.time}`;
-    setInterval(() => {
+    const timerInterval = setInterval(() => {
       if (this.time > 0) {
         this.time -= 1;
         timerContainer.innerHTML = `${this.time}`;
       }
       if (this.time === 0) {
         if (this.generatedQuestions) {
+          clearInterval(timerInterval);
           this.renderSummary();
         }
       }
