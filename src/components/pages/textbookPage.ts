@@ -61,6 +61,7 @@ class TextbookPage extends Control {
       localStorage.getItem("textbookSection") === "0"
     ) {
       group = "0";
+      textbookSectionSelect.selectedIndex = 0;
       textbookSectionSelect.style.background = textbookSectionsColors["0"];
     } else {
       group = localStorage.getItem("textbookSection") as string;
@@ -78,6 +79,7 @@ class TextbookPage extends Control {
       localStorage.getItem("textbookPage") === "0"
     ) {
       page = "0";
+      textbookPagesSelect.selectedIndex = 0;
     } else {
       page = localStorage.getItem("textbookPage") as string;
       textbookPagesSelect.selectedIndex = localStorage.getItem(
