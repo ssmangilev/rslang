@@ -7,6 +7,8 @@ import {
   UserLoginInformationType,
   ILogin,
   DBErrorsSubType,
+  IUserWord,
+  IStatistics,
 } from "../types/types";
 import APIConstants from "./APIConstants";
 
@@ -113,4 +115,183 @@ export async function getNewTokens(userId: string): Promise<void> {
   }
 }
 
-export default { getUser, createUser, updateUser, getNewTokens };
+export async function getUserWord(
+  userId: string,
+  wordId: string
+): Promise<IUserWord | unknown> {
+  try {
+    const response: Response = await fetch(
+      `
+    ${APIConstants.usersEndpoint}/${userId}/${wordId}`,
+      {
+        method: "GET",
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      getUserWord(userId, wordId);
+    }
+    const data: IUserWord = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getUserWords(
+  userId: string
+): Promise<IUserWord[] | unknown> {
+  try {
+    const response: Response = await fetch(
+      `${APIConstants.usersEndpoint}/${userId}/words}`,
+      {
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      getUserWords(userId);
+    }
+    const data: IUserWord[] = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function createUserWord(
+  userId: string,
+  wordId: string,
+  wordData: IUserWord
+): Promise<IUserWord | unknown> {
+  try {
+    const responseBody = JSON.stringify(wordData);
+    const response: Response = await fetch(
+      `${APIConstants.usersEndpoint}/${userId}/${wordId}`,
+      {
+        method: "POST",
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+        body: responseBody,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      createUserWord(userId, wordId, wordData);
+    }
+    const data: IUserWord = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function updateUserWord(
+  userId: string,
+  wordId: string,
+  wordData: IUserWord
+): Promise<IUserWord | unknown> {
+  try {
+    const responseBody = JSON.stringify(wordData);
+    const response: Response = await fetch(
+      `${APIConstants.usersEndpoint}/${userId}/${wordId}`,
+      {
+        method: "PUT",
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+        body: responseBody,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      updateUserWord(userId, wordId, wordData);
+    }
+    const data: IUserWord = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function deleteUserWord(
+  userId: string,
+  wordId: string
+): Promise<void | unknown> {
+  try {
+    const response: Response = await fetch(
+      `${APIConstants.usersEndpoint}/${userId}/${wordId}`,
+      {
+        method: "DELETE",
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      deleteUserWord(userId, wordId);
+    }
+    const data: IUserWord = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getUserStatistics(
+  userId: string
+): Promise<IStatistics | unknown> {
+  try {
+    const response: Response = await fetch(
+      `${APIConstants.usersEndpoint}/${userId}/statistics`,
+      {
+        method: "GET",
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      getUserStatistics(userId);
+    }
+    const data: IStatistics = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function updateUserStatistics(
+  userId: string,
+  statistics: IStatistics
+): Promise<IStatistics | unknown> {
+  try {
+    const responseBody = JSON.stringify(statistics);
+    const response: Response = await fetch(
+      `${APIConstants.usersEndpoint}/${userId}/statistics`,
+      {
+        method: "PUT",
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+        body: responseBody,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      updateUserStatistics(userId, statistics);
+    }
+    const data: IStatistics = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+export default {
+  getUser,
+  createUser,
+  updateUser,
+  getNewTokens,
+  getUserWord,
+  createUserWord,
+  updateUserWord,
+  deleteUserWord,
+  getUserWords,
+  getUserStatistics,
+  updateUserStatistics,
+};
