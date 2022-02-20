@@ -17,8 +17,6 @@ class StartPage extends Control {
   createLink;
   main;
 
-  onTextbookPage!: () => void;
-
   constructor() {
     super(null);
     this.main = <HTMLElement>document.getElementById("main");

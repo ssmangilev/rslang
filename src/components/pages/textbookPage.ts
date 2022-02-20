@@ -1,5 +1,5 @@
 import Control from "../services/controls";
-import { Buttons } from "../configuration/buttons";
+import Buttons from "../configuration/buttons";
 import { cardsLoader } from "../services/cardsLoader";
 import { createTesxtbookSectionSelect } from "../controllers/textbookSectionSelect";
 import { textbookSectionsColors } from "../configuration/textbookSections";

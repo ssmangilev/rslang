@@ -117,7 +117,6 @@ class Application extends Control {
       };
     };
 
-
     startPage.onTextbookPage = () => {
       startPage.destroyСontent(document.getElementById("main") as HTMLElement);
       const textbookPage = new TextbookPage();
@@ -129,10 +128,9 @@ class Application extends Control {
         this.mainCycle();
       };
     };
-    
+
     const eventService = new AppEventsService();
     eventService.addListeners();
-
   }
 }
 
