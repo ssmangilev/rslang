@@ -6,7 +6,8 @@ class Control<NodeType extends HTMLElement = HTMLElement> {
     tagName = "div",
     className = "",
     idName = "",
-    content = ""
+    content = "",
+    authorization = false
   ) {
     const el = document.createElement(tagName);
     el.id = idName;
@@ -14,6 +15,9 @@ class Control<NodeType extends HTMLElement = HTMLElement> {
     el.textContent = content;
     if (parentNode) {
       parentNode.append(el);
+    }
+    if (authorization) {
+      el.style.display = localStorage.getItem("token") ? "block" : "none";
     }
     this.node = el as NodeType;
   }

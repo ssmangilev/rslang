@@ -7,7 +7,7 @@ function audioGmae() {
   console.log("Пример дальнейшего выполнения страницы");
 }
 
-class StartPage extends Control {
+export default class StartPage extends Control {
   onRegistration!: () => void;
   onProjectInfo!: () => void;
   onStartPage!: () => void;
@@ -16,6 +16,10 @@ class StartPage extends Control {
   onStatPage!: () => void;
   createLink;
   main;
+
+  onSprint!: () => void;
+
+  onAudioCall!: () => void;
 
   constructor() {
     super(null);
@@ -55,12 +59,12 @@ class StartPage extends Control {
     (
       document.querySelector(".side-navigation__link_sprint") as HTMLElement
     ).addEventListener("click", () => {
-      console.log(1);
+      this.onSprint();
     });
     (
       document.querySelector(".side-navigation__link_audioTask") as HTMLElement
     ).addEventListener("click", () => {
-      console.log(1);
+      this.onAudioCall();
     });
     (
       document.querySelector(".side-navigation__link_team") as HTMLElement
@@ -93,5 +97,3 @@ class StartPage extends Control {
     this.main.append(btnsDiv);
   }
 }
-
-export default StartPage;
