@@ -120,14 +120,15 @@
 }
 
 .alert-success {
-  top: 0;
-  left: 80%;
+  top: 10px;
+  left: 45%;
   position: fixed;
   background-color: #579c59;
   color: white;
   max-width: 20%;
-  max-height: 50px;
-  height: 50px;
+  max-height: 80px;
+  height: 80px;
   margin: 0 auto;
+  padding: 20px;
   display: none;
 }

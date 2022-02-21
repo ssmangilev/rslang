@@ -47,10 +47,15 @@ export async function createUser(
       headers: APIConstants.HEADERS_FOR_REQUESTS_WITHOUT_AUTH,
       body: JSON.stringify(requestBody),
     });
+    if (response.ok && response.status === 200) {
+      const json: IUser = await response.json();
+      console.log(json);
+    }
     if (response.status === 417) {
       return { email: "User with this email exists" } as IUserExistsError;
     }
     const data: IUser | UserServerError422Type = await response.json();
+
     if (response.status === 422) {
       const errorsPath: DBErrorsType = (data as UserServerError422Type).error;
       const errors: DBErrorsSubType[] =
@@ -66,6 +71,7 @@ export async function createUser(
       });
       return errorsData as IUserEmailOrPasswordIncorrect;
     }
+    console.log(data);
     return data as IUser;
   } catch (err) {
     console.log(err);

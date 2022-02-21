@@ -187,6 +187,9 @@ export default class ModalWindow implements IModalWindow {
             }, 3000);
             modalContainer.style.display = "none";
             window.location.reload();
+            (
+              document.getElementById("button-login") as HTMLElement
+            ).classList.add("logout");
           } else {
             this.elements.forEach((el: IModalWindowElement): void => {
               if (loginData && Object.keys(loginData).indexOf(el.name) !== -1) {

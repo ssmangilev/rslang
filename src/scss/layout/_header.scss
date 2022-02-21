@@ -75,6 +75,9 @@ span.header__button {
   &_reg {
     background: url('../assets/svg/unauth-icon.svg') no-repeat;
   }
+  &.logout {
+    background: url('../assets/svg/logout-icon.svg') no-repeat;
+  }
 }
 
 .header__logo-container {
