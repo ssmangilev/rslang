@@ -20,28 +20,19 @@ export default class StartPage extends Control {
   constructor() {
     super(null);
     this.main = <HTMLElement>document.getElementById("main");
-    this.render();
-    const registrButton = new Control(
-      document.getElementById("main-btns"),
-      "button",
-      "main__btn button",
-      "",
-      `${Buttons.onRegistration}`
-    );
-    registrButton.node.onclick = () => this.onRegistration();
 
-    const infoButton = new Control(
-      document.getElementById("main-btns"),
-      "button",
-      "main__btn button",
-      "",
-      `${Buttons.onProjectInfo}`
-    );
-    infoButton.node.onclick = () => this.onProjectInfo();
+    this.generateMainContent();
 
     this.createLink = createLink;
 
     this.navGeneration();
+
+    (
+      document.querySelector(".side-navigation__link_main") as HTMLElement
+    ).addEventListener("click", () => {
+      this.destroyСontent(document.getElementById("main") as HTMLElement);
+      this.generateMainContent();
+    });
     (
       document.querySelector(".side-navigation__link_ebook") as HTMLElement
     ).addEventListener("click", () => {
@@ -84,5 +75,26 @@ export default class StartPage extends Control {
     btnsDiv.classList.add("main-ui__btns");
     btnsDiv.id = "main-btns";
     this.main.append(btnsDiv);
+  }
+
+  private generateMainContent() {
+    this.render();
+    const registrButtonApp = new Control(
+      document.getElementById("main-btns"),
+      "button",
+      "main__btn button",
+      "",
+      `${Buttons.onRegistration}`
+    );
+    registrButtonApp.node.onclick = () => this.onRegistration();
+
+    const infoButtonApp = new Control(
+      document.getElementById("main-btns"),
+      "button",
+      "main__btn button",
+      "",
+      `${Buttons.onProjectInfo}`
+    );
+    infoButtonApp.node.onclick = () => this.onProjectInfo();
   }
 }
