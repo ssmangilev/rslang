@@ -16,7 +16,7 @@ class AboutPage extends Control {
       <div class='info-container__content content'>
         <div class='content-card'>
           <div class='img-wrap'>
-            <img class='content-img' alt='' src='../../assets/team/photo1.jpg'>
+            <img class='content-img' alt='' src='https://avatars.githubusercontent.com/u/86509140?v=4'>
           </div>
           <div class='content-card__title'>Григорий Яворский</div>
           <a href='https://github.com/GrigoriyYav' class='content-card__github'>GrigoriyYav</a>
