@@ -16,7 +16,6 @@ async function cardsLoader(group: string, page: string) {
     const cardAudio = document.createElement("audio");
     const cardAudioBtn = document.createElement("div");
     cardAudioBtn.classList.add("card-audio-btn", "pause");
-    let audioIsPlay = false;
     const cardAudioSrc = [
       `https://rslangbackend.herokuapp.com/${word.audio}`,
       `https://rslangbackend.herokuapp.com/${word.audioMeaning}`,
@@ -27,10 +26,13 @@ async function cardsLoader(group: string, page: string) {
     cardAudioBtn.onclick = () => {
       cardAudioBtn.classList.toggle("pause");
       cardAudioBtn.classList.toggle("play");
-      if (!audioIsPlay) cardAudio.play();
-      else cardAudio.pause();
+      if (cardAudio.paused) {
+        cardAudio.play();
+      } else {
+        cardAudio.pause();
+        cardAudio.currentTime = 0;
+      }
       cardAudio.currentTime = 0;
-      audioIsPlay = !audioIsPlay;
     };
 
     cardAudio.addEventListener("ended", function Audioended() {
@@ -41,7 +43,7 @@ async function cardsLoader(group: string, page: string) {
 
     const audios = document.getElementsByTagName("audio");
     const audioBtns = document.getElementsByClassName("card-audio-btn");
-    window.addEventListener(
+    document.addEventListener(
       "play",
       // eslint-disable-next-line func-names
       function (e) {

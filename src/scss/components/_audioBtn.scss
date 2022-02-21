@@ -1,6 +1,17 @@
 .card-audio-btn{
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   margin: 0;
-  background-color: black;
+  background-repeat: no-repeat;
+  background-position: center;
+  -webkit-transition: background-image 0.3s ease-in-out;
+  transition: background-image 0.3s ease-in-out;
+}
+
+.card-audio-btn.pause{
+  background-image: url("/src/assets/svg/bx-play-circle.svg");
+}
+
+.card-audio-btn.play{
+  background-image: url("/src/assets/svg/bx-pause-circle.svg");
 }
