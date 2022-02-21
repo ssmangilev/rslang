@@ -21,7 +21,15 @@ async function cardsLoader(group: string, page: string) {
       `https://rslangbackend.herokuapp.com/${word.audioMeaning}`,
       `https://rslangbackend.herokuapp.com/${word.audioExample}`,
     ];
-    cardAudio.src = cardAudioSrc["1"];
+
+    const proms = cardAudioSrc.map((AudioSrc) =>
+      fetch(AudioSrc).then((r) => r.blob())
+    );
+    Promise.all(proms).then((blobs) => {
+      const blob = new Blob([blobs[0], blobs[1], blobs[2]]);
+      const blobUrl = URL.createObjectURL(blob);
+      cardAudio.src = blobUrl;
+    });
 
     cardAudioBtn.onclick = () => {
       cardAudioBtn.classList.toggle("pause");
