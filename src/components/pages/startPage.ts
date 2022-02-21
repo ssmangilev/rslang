@@ -3,10 +3,6 @@ import Buttons from "../configuration/buttons";
 import Links from "../configuration/links";
 import { createLink } from "../utils/utils";
 
-function audioGmae() {
-  console.log("Пример дальнейшего выполнения страницы");
-}
-
 export default class StartPage extends Control {
   onRegistration!: () => void;
   onProjectInfo!: () => void;
@@ -41,7 +37,7 @@ export default class StartPage extends Control {
       "",
       `${Buttons.onProjectInfo}`
     );
-    infoButton.node.onclick = () => {};
+    infoButton.node.onclick = () => this.onProjectInfo();
 
     this.createLink = createLink;
 
@@ -71,8 +67,6 @@ export default class StartPage extends Control {
     ).addEventListener("click", () => {
       this.onStatPage();
     });
-
-    audioGmae(); /* An example of filling a class, it is also possible through methods */
   }
 
   private navGeneration() {
