@@ -51,10 +51,12 @@ class Application extends Control {
     );
     loginModalWindow.render();
     headerButton.addEventListener("click", (): void => {
-      const modalLoginContainer: HTMLElement = document.getElementById(
-        loginModalWindow.id
-      ) as HTMLElement;
-      modalLoginContainer.style.display = "block";
+      if (!headerButton.classList.contains("logout")) {
+        const modalLoginContainer: HTMLElement = document.getElementById(
+          loginModalWindow.id
+        ) as HTMLElement;
+        modalLoginContainer.style.display = "block";
+      }
     });
     const startPage = new StartPage();
     const registrationModalWindow = new ModalWindow(
@@ -91,10 +93,12 @@ class Application extends Control {
     );
     registrationModalWindow.render();
     startPage.onRegistration = () => {
-      const modalContainer: HTMLElement = document.getElementById(
-        registrationModalWindow.id
-      ) as HTMLElement;
-      modalContainer.style.display = "block";
+      if (!localStorage.getItem("token")) {
+        const modalContainer: HTMLElement = document.getElementById(
+          registrationModalWindow.id
+        ) as HTMLElement;
+        modalContainer.style.display = "block";
+      }
     };
     startPage.onProjectInfo = () => {
       startPage.destroyСontent(document.getElementById("main") as HTMLElement);
