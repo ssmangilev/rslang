@@ -58,6 +58,15 @@ export default class StartPage extends Control {
     ).addEventListener("click", () => {
       this.onStatPage();
     });
+
+    const statisticsBtn = document.getElementById(
+      "statisticsPage"
+    ) as HTMLElement;
+    if (!localStorage.getItem("token")) {
+      if (statisticsBtn) statisticsBtn.style.visibility = "hidden";
+    } else {
+      statisticsBtn.style.visibility = "visible";
+    }
   }
 
   private navGeneration() {
