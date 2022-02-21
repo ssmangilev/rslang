@@ -37,7 +37,7 @@ class TextbookPage extends Control {
     const onStartPage = new Control(
       textbookNavigation,
       "button",
-      "textbook-on-start-page",
+      "button route-btn route-btn_main",
       "textbook-on-start-page",
       `${Buttons.onStartPage}`
     );
