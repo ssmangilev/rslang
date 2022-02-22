@@ -140,6 +140,9 @@ export async function getUserWord(
       getNewTokens(userId);
       getUserWord(userId, wordId);
     }
+    if (response.status === 404) {
+      return null;
+    }
     const data: IUserWord = await response.json();
     return data;
   } catch (error) {
@@ -152,7 +155,7 @@ export async function getUserWords(
 ): Promise<IUserWord[] | unknown> {
   try {
     const response: Response = await fetch(
-      `${APIConstants.usersEndpoint}/${userId}/words}`,
+      `${APIConstants.usersEndpoint}/${userId}/words`,
       {
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
       }
@@ -176,7 +179,7 @@ export async function createUserWord(
   try {
     const responseBody = JSON.stringify(wordData);
     const response: Response = await fetch(
-      `${APIConstants.usersEndpoint}/${userId}/${wordId}`,
+      `${APIConstants.usersEndpoint}/${userId}/words/${wordId}`,
       {
         method: "POST",
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
@@ -202,7 +205,7 @@ export async function updateUserWord(
   try {
     const responseBody = JSON.stringify(wordData);
     const response: Response = await fetch(
-      `${APIConstants.usersEndpoint}/${userId}/${wordId}`,
+      `${APIConstants.usersEndpoint}${userId}/words/${wordId}`,
       {
         method: "PUT",
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
@@ -226,7 +229,7 @@ export async function deleteUserWord(
 ): Promise<void | unknown> {
   try {
     const response: Response = await fetch(
-      `${APIConstants.usersEndpoint}/${userId}/${wordId}`,
+      `${APIConstants.usersEndpoint}/${userId}/words/${wordId}`,
       {
         method: "DELETE",
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
@@ -257,6 +260,9 @@ export async function getUserStatistics(
     if (response.status === 401) {
       getNewTokens(userId);
       getUserStatistics(userId);
+    }
+    if (response.status === 404) {
+      return null;
     }
     const data: IStatistics = await response.json();
     return data;
@@ -337,6 +343,56 @@ export async function getUserLearnedWordsIds(
     const ids: string[] =
       data[0].paginatedResults?.map((word: IWord): string => word.id) || [];
     return ids;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getUserLearnedWordsCountPerDay(
+  userId: string
+): Promise<number | unknown> {
+  const WORDS_PER_PAGE = 3600;
+  const dateString = new Date().toISOString().split("T")[0];
+  const filter = `{"$and":[{"userWord.optional.isLearned": "${dateString}", "userWord.difficulty":"easy"}]}`;
+  try {
+    const response: Response = await fetch(
+      `${APIConstants.usersEndpoint}/${userId}/aggregatedWords?wordsPerPage=${WORDS_PER_PAGE}&filter=${filter}`,
+      {
+        method: "GET",
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      getUserLearnedWordsIds(userId);
+    }
+    const data: IAggregatedWords[] = await response.json();
+    return data[0].paginatedResults?.length || 0;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getUserNewWordsCountPerDay(
+  userId: string
+): Promise<number | unknown> {
+  const WORDS_PER_PAGE = 3600;
+  const dateString = new Date().toISOString().split("T")[0];
+  const filter = `{"userWord.optional.newWord": "${dateString}"}`;
+  try {
+    const response: Response = await fetch(
+      `${APIConstants.usersEndpoint}/${userId}/aggregatedWords?wordsPerPage=${WORDS_PER_PAGE}&filter=${filter}`,
+      {
+        method: "GET",
+        headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
+      }
+    );
+    if (response.status === 401) {
+      getNewTokens(userId);
+      getUserLearnedWordsIds(userId);
+    }
+    const data: IAggregatedWords[] = await response.json();
+    return data[0].paginatedResults?.length || 0;
   } catch (error) {
     return error;
   }

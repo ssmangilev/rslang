@@ -1,5 +1,6 @@
 import Control from "../services/controls";
 import Links from "../configuration/links";
+import { IWord } from "../types/types";
 
 export default function capitalizeFirstLetter(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -34,4 +35,8 @@ export function getLoaderSVG(): string {
 
 export function generateRandomNumber(limit: number): number {
   return Math.floor(Math.random() * limit);
+}
+
+export function shuffleWordsArray(array: IWord[]): IWord[] {
+  return array.sort(() => Math.random() - 0.5);
 }
