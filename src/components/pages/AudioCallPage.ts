@@ -8,20 +8,20 @@ class AudioCallPage extends Control {
   page?: number;
   constructor(group?: number, page?: number) {
     super(null);
-    this.group = group;
-    this.page = page;
     const mainContainer = document.createElement("div");
     mainContainer.classList.add("audiocall");
-    if (!this.group && !this.page) {
+    if (!group && group !== 0 && !page && page !== 0) {
       const audioCall = new GameView(mainContainer, GamesEnum.audiocall);
       audioCall.render();
     }
-    if (this.group && this.page) {
+    if ((group || group === 0) && (page || page === 0)) {
+      console.log(group);
+      console.log(page);
       const audioCall = new GameView(
         mainContainer,
         GamesEnum.audiocall,
-        this.group,
-        this.page
+        group,
+        page
       );
       audioCall.render();
     }

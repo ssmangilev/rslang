@@ -11,6 +11,7 @@ import { logIn } from "../api/SigninEndpoint";
 import AppEventsService from "../services/appEventService";
 import SprintPage from "./Sprintpage";
 import AudioCallPage from "./AudioCallPage";
+import StatisticsPage from "./StatisticsPage";
 
 class Application extends Control {
   constructor() {
@@ -139,7 +140,7 @@ class Application extends Control {
         );
         const sprintPage = new SprintPage(
           +(localStorage.getItem("textbookSection") || 0),
-          +(localStorage.getItem("textbookPage") || 1)
+          +(localStorage.getItem("textbookPage") || 0)
         );
       };
 
@@ -149,7 +150,7 @@ class Application extends Control {
         );
         const audioCallPage = new AudioCallPage(
           +(localStorage.getItem("textbookSection") || 0),
-          +(localStorage.getItem("textbookPage") || 1)
+          +(localStorage.getItem("textbookPage") || 0)
         );
       };
     };
@@ -163,6 +164,11 @@ class Application extends Control {
     startPage.onAudioCall = () => {
       startPage.destroyСontent(document.getElementById("main") as HTMLElement);
       const audioCallPage = new AudioCallPage();
+    };
+
+    startPage.onStatPage = () => {
+      startPage.destroyСontent(document.getElementById("main") as HTMLElement);
+      const statsPage = new StatisticsPage();
     };
   }
 }

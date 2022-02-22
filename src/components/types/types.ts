@@ -96,7 +96,7 @@ interface ISettings {
 
 interface IFullStatistic {
   gameStatistic: IGameStatistics;
-  wordStatistic: undefined;
+  wordStatistic: unknown;
 }
 
 interface IGameFullStatistics {
