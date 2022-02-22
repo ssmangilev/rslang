@@ -6,12 +6,32 @@ import {
   GamesEnum,
   IGame,
   IQuestion,
+  IUser,
+  IUserWord,
+  IUserWordDetail,
   IWord,
+  IWordInGame,
 } from "../types/types";
-import { getLoaderSVG, generateRandomNumber } from "../utils/utils";
-import { getUserNewWordsIds } from "../api/UsersEndpoint";
+import {
+  getLoaderSVG,
+  generateRandomNumber,
+  shuffleWordsArray,
+} from "../utils/utils";
+import {
+  createUserWord,
+  getUserLearnedWordsIds,
+  getUserNewWordsIds,
+  getUserWord,
+  getUserWords,
+  updateUserStatistics,
+  updateUserWord,
+} from "../api/UsersEndpoint";
+import Control from "../services/controls";
+import Buttons from "../configuration/buttons";
 
 export default class GameView implements IGame {
+  onStartPage!: () => void;
+
   group?: number;
 
   page?: number;
@@ -42,6 +62,8 @@ export default class GameView implements IGame {
 
   userNewWords: string[] | undefined | unknown;
 
+  userWords: IUserWord[] | unknown;
+
   constructor(
     container: HTMLElement,
     type: GamesEnum.audiocall | GamesEnum.sprint,
@@ -67,9 +89,128 @@ export default class GameView implements IGame {
     this.rightAnswersArray = [];
     this.wrongAnswersArray = [];
     this.userNewWords = [];
+    this.userWords = [];
+  }
+
+  async updateWordStats(isRight: boolean, question: IQuestion): Promise<void> {
+    let wordStats;
+    const keyBy = (array: any[], key: string) =>
+      (array || []).reduce((r, x) => ({ ...r, [key ? x[key] : x]: x }), {});
+    if (this.userWords) {
+      const userWords = keyBy(this.userWords as any, "wordId");
+      if (userWords[question.rightAnswer.id]) {
+        wordStats = userWords[question.rightAnswer.id];
+      } else {
+        wordStats = {
+          difficulty: "medium",
+          optional: {
+            isHard: false,
+            isLearned: false,
+            sprint: {
+              right: 0,
+              wrong: 0,
+              rightInRow: 0,
+            },
+            audioCall: {
+              right: 0,
+              wrong: 0,
+              rightInRow: 0,
+            },
+          },
+        };
+      }
+    } else {
+      wordStats = {
+        difficulty: "medium",
+        optional: {
+          isLearned: false,
+          isHard: false,
+          sprint: {
+            right: 0,
+            wrong: 0,
+            rightInRow: 0,
+          },
+          audioCall: {
+            right: 0,
+            wrong: 0,
+            rightInRow: 0,
+          },
+        },
+      };
+    }
+    if (!wordStats.optional.newWord) {
+      // eslint-disable-next-line prefer-destructuring
+      wordStats.optional.newWord = new Date().toISOString().split("T")[0];
+    }
+    if (isRight) {
+      if (this.type === GamesEnum.sprint) {
+        wordStats.optional.sprint.rightInRow += 1;
+        wordStats.optional.sprint.right += 1;
+      }
+      if (this.type === GamesEnum.audiocall) {
+        wordStats.optional.audioCall.rightInRow += 1;
+        wordStats.optional.audioCall.right += 1;
+      }
+      if (wordStats.optional.sprint || wordStats.optional.audioCall) {
+        if (wordStats.difficulty === "medium") {
+          const sprintCount = wordStats.optional.sprint.rightInRow || 0;
+          const audioCallCount = wordStats.optional.audioCall.rightInRow || 0;
+          const count = sprintCount + audioCallCount;
+          if (count === 3) {
+            wordStats.difficulty = "easy";
+            [wordStats.optional.isLearned] = new Date()
+              .toISOString()
+              .split("T");
+          }
+        }
+        if (wordStats.difficulty === "hard") {
+          const sprintCount = wordStats.optional.sprint.rightInRow || 0;
+          const audioCallCount = wordStats.optional.audioCall.rightInRow || 0;
+          const count = sprintCount + audioCallCount;
+          if (count === 5) {
+            wordStats.difficulty = "easy";
+            [wordStats.optional.isLearned] = new Date()
+              .toISOString()
+              .split("T");
+          }
+        }
+      }
+    }
+    if (!isRight) {
+      if (this.type === GamesEnum.sprint) {
+        wordStats.optional.sprint.rightInRow = 0;
+        wordStats.optional.sprint.wrong += 1;
+      }
+      if (this.type === GamesEnum.audiocall) {
+        wordStats.optional.audioCall.rightInRow = 0;
+        wordStats.optional.audioCall.wrong += 1;
+      }
+      if (wordStats.optional.sprint || wordStats.optional.audioCall) {
+        if (wordStats.difficulty === "easy") {
+          wordStats.difficulty = "medium";
+          wordStats.optional.isLearned = false;
+        }
+      }
+    }
+    if (wordStats.id) {
+      delete wordStats.id;
+      delete wordStats.wordId;
+      await updateUserWord(
+        localStorage.getItem("userId") || "",
+        question.rightAnswer.id,
+        wordStats
+      );
+    } else {
+      await createUserWord(
+        localStorage.getItem("userId") || "",
+        question.rightAnswer.id,
+        wordStats
+      );
+    }
   }
 
   renderTitle(): void {
+    this.container.id = `${this.type}`;
     const scoreContainer: HTMLElement = document.createElement("div");
     scoreContainer.id = `${this.type}-score`;
     scoreContainer.className = "game-score";
@@ -124,7 +265,8 @@ export default class GameView implements IGame {
     Object.values(GameDifficulty).forEach((diff: string) => {
       const diffButton: HTMLButtonElement = document.createElement("button");
       diffButton.addEventListener("click", async () => {
-        this.group = +diff - 1;
+        this.group = +diff;
+        console.log(this.group);
         diffButtonsContainer.style.display = "none";
         loaderContainer.classList.remove("loaded");
         await this.generateQuestions();
@@ -132,7 +274,7 @@ export default class GameView implements IGame {
       });
       diffButton.id = `${diff}-button`;
       diffButton.className = "button difficulty-button";
-      diffButton.innerHTML = diff;
+      diffButton.innerHTML = (+diff + 1).toString();
       diffButtons.appendChild(diffButton);
     });
     diffButtonsContainer.appendChild(diffTitle);
@@ -148,49 +290,98 @@ export default class GameView implements IGame {
     const AUDIOCALL_ANSWERS_COUNT = 5;
     const dataForLoading = [];
     const questionsWithAnswers: IQuestion[] = [];
+    console.log(this.page);
+    console.log(this.group);
     if (this.page && this.group) {
-      const wordsData = await getWords(
+      let wordsData = await getWords(
         this.group.toString(),
         this.page.toString()
       );
-    } else if (!this.page && this.group) {
+      const learnedWordsIds: string[] | unknown = await getUserLearnedWordsIds(
+        localStorage.getItem("userId") || ""
+      );
+      wordsData = wordsData.filter(
+        (word: IWord): boolean =>
+          (learnedWordsIds as string[]).indexOf(word.id) === -1
+      );
+      while (wordsData.length < QUESTIONS_LIMIT) {
+        if (this.page > 0) {
+          this.page -= 1;
+          // eslint-disable-next-line no-await-in-loop
+          let pageData = await getWords(
+            this.group.toString(),
+            this.page.toString()
+          );
+          pageData = pageData.filter(
+            (word: IWord): boolean =>
+              (learnedWordsIds as string[]).indexOf(word.id) === -1
+          );
+          wordsData = wordsData.concat(pageData);
+        }
+      }
+      console.log(wordsData);
+      wordsData.forEach((word: IWord): void => {
+        const answers: IWord[] = [];
+        answers.push(word);
+        const answersCount =
+          this.type === GamesEnum.sprint
+            ? SPRINT_ANSWERS_COUNT
+            : AUDIOCALL_ANSWERS_COUNT;
+        while (answers.length < answersCount) {
+          const newRandomAnswer = generateRandomNumber(wordsData.length);
+          if (word.id !== wordsData[newRandomAnswer].id) {
+            answers.push(wordsData[newRandomAnswer]);
+          }
+        }
+        questionsWithAnswers.push({
+          question: word.word,
+          rightAnswer: word,
+          answers,
+        });
+      });
+    } else if (!this.page && (this.group === 0 || this.group)) {
       while (dataForLoading.length < QUESTIONS_LIMIT) {
         const randomPage = generateRandomNumber(PAGES_COUNT);
         dataForLoading.push(
           getWords(this.group?.toString(), randomPage.toString())
         );
       }
+      const result = await Promise.all(dataForLoading);
+      result.forEach((element: IWord[]): void => {
+        const randomWord = generateRandomNumber(MAX_QUESTION_PER_PAGE);
+        const answers: IWord[] = [];
+        answers.push(element[randomWord]);
+        const answersCount =
+          this.type === GamesEnum.sprint
+            ? SPRINT_ANSWERS_COUNT
+            : AUDIOCALL_ANSWERS_COUNT;
+        while (answers.length < answersCount) {
+          const newRandomAnswer = generateRandomNumber(MAX_QUESTION_PER_PAGE);
+          if (element[randomWord].id !== element[newRandomAnswer].id) {
+            answers.push(element[newRandomAnswer]);
+          }
+        }
+        questionsWithAnswers.push({
+          question: element[randomWord].word,
+          rightAnswer: element[randomWord],
+          answers,
+        });
+      });
     }
     if (localStorage.getItem("userId")) {
       this.userNewWords = await getUserNewWordsIds(
         localStorage.getItem("userId") || ""
       );
+      this.userWords = await getUserWords(localStorage.getItem("userId") || "");
     }
-    const result = await Promise.all(dataForLoading);
-    result.forEach((element: IWord[]): void => {
-      const randomWord = generateRandomNumber(MAX_QUESTION_PER_PAGE);
-      const answers: IWord[] = [];
-      answers.push(element[randomWord]);
-      const answersCount =
-        this.type === GamesEnum.sprint
-          ? SPRINT_ANSWERS_COUNT
-          : AUDIOCALL_ANSWERS_COUNT;
-      while (answers.length < answersCount) {
-        const newRandomAnswer = generateRandomNumber(MAX_QUESTION_PER_PAGE);
-        if (element[randomWord].id !== element[newRandomAnswer].id) {
-          answers.push(element[newRandomAnswer]);
-        }
-      }
-      questionsWithAnswers.push({
-        question: element[randomWord].word,
-        rightAnswer: element[randomWord],
-        answers,
-      });
-    });
     this.generatedQuestions = questionsWithAnswers;
   }
 
   renderQuestion(question: IQuestion): void {
+    const gameContainer: HTMLElement = document.getElementById(
+      `${this.type}`
+    ) as HTMLElement;
+    gameContainer.style.display = "block";
     const scoreContainer: HTMLElement = document.getElementById(
       `${this.type}-score`
     ) as HTMLElement;
@@ -244,6 +435,7 @@ export default class GameView implements IGame {
       ) as HTMLElement;
       typeTitleHeader.style.display = "none";
       scoreContainer.style.display = "block";
+      scoreContainer.style.marginBottom = "50px";
       const word: HTMLElement = document.getElementById(
         `${this.type}-question-word`
       ) as HTMLElement;
@@ -280,10 +472,11 @@ export default class GameView implements IGame {
           wrongButtonAnswer.click();
         }
       };
-      const handleAnswer = (event: Event): void => {
+      const handleAnswer = async (event: Event): Promise<void> => {
         if (event.target) {
           const id = (event.target as HTMLButtonElement).dataset?.id;
           if (id === question.rightAnswer.id) {
+            await this.updateWordStats(true, question);
             this.score += 10;
             this.rightAnswers += 1;
             this.correctAnswersInRow += 1;
@@ -294,6 +487,7 @@ export default class GameView implements IGame {
             }
             scoreContainer.innerHTML = `Текущий счёт: ${this.score}`;
           } else {
+            await this.updateWordStats(false, question);
             if (this.longestRightSeries < this.correctAnswersInRow) {
               this.longestRightSeries = this.correctAnswersInRow;
             }
@@ -324,6 +518,9 @@ export default class GameView implements IGame {
       const audio = new Audio(
         `${BACKEND_ADDRESS}/${question.rightAnswer.audio}`
       );
+      const playButtonListener = () => {
+        audio.play();
+      };
       if (document.getElementById(`${this.type}-question-container`)) {
         (
           document.getElementById(
@@ -341,6 +538,7 @@ export default class GameView implements IGame {
         const word: HTMLElement = document.createElement("div");
         word.id = `${this.type}-question-word`;
         word.className = "question-word-audiocall";
+        word.addEventListener("click", playButtonListener);
         const buttonsContainer: HTMLElement = document.createElement("div");
         buttonsContainer.id = `${this.type}-question-buttons-container`;
         buttonsContainer.className = "question-buttons-audiocall";
@@ -356,10 +554,13 @@ export default class GameView implements IGame {
             }
           });
         };
-        const handleAnswer = (event: Event): void => {
+        const handleAnswer = async (event: Event): Promise<void> => {
           if (event.target) {
+            const button: HTMLButtonElement = event.target as HTMLButtonElement;
             const id = (event.target as HTMLButtonElement).dataset?.id;
             if (id === question.rightAnswer.id) {
+              button.style.backgroundColor = "green";
+              await this.updateWordStats(true, question);
               this.score += 10;
               this.rightAnswers += 1;
               this.correctAnswersInRow += 1;
@@ -370,6 +571,8 @@ export default class GameView implements IGame {
               }
               scoreContainer.innerHTML = `Текущий счёт: ${this.score}`;
             } else {
+              button.style.backgroundColor = "red";
+              await this.updateWordStats(false, question);
               if (this.longestRightSeries < this.correctAnswersInRow) {
                 this.longestRightSeries = this.correctAnswersInRow;
               }
@@ -380,6 +583,7 @@ export default class GameView implements IGame {
             if (this.generatedQuestions) {
               event.target.removeEventListener("click", handleAnswer);
               document.removeEventListener("keydown", keyboardHandler);
+              word.removeEventListener("click", playButtonListener);
               if (this.questionIndex < this.generatedQuestions.length) {
                 this.renderQuestion(
                   this.generatedQuestions[this.questionIndex]
@@ -397,20 +601,22 @@ export default class GameView implements IGame {
             }
           }
         };
-        question.answers.forEach((answer: IWord, index: number) => {
-          const answerButton: HTMLButtonElement =
-            document.createElement("button");
-          answerButton.id = `${this.type}-answer-button-${answer.id}-${
-            index + 1
-          }`;
-          answerButton.className = "question-button-audiocall";
-          answerButton.dataset.id = answer.id;
-          answerButton.dataset.number = (index + 1).toString();
-          answerButton.innerHTML = answer.wordTranslate;
-          answerButton.addEventListener("click", handleAnswer);
-          document.addEventListener("keydown", keyboardHandler);
-          buttonsContainer.appendChild(answerButton);
-        });
+        shuffleWordsArray(question.answers).forEach(
+          (answer: IWord, index: number) => {
+            const answerButton: HTMLButtonElement =
+              document.createElement("button");
+            answerButton.id = `${this.type}-answer-button-${answer.id}-${
+              index + 1
+            }`;
+            answerButton.className = "question-button-audiocall";
+            answerButton.dataset.id = answer.id;
+            answerButton.dataset.number = (index + 1).toString();
+            answerButton.innerHTML = answer.wordTranslate;
+            answerButton.addEventListener("click", handleAnswer);
+            document.addEventListener("keydown", keyboardHandler);
+            buttonsContainer.appendChild(answerButton);
+          }
+        );
         const withoutAnswerContainer: HTMLElement =
           document.createElement("div");
         withoutAnswerContainer.id = `${this.type}-without-answer-container`;
@@ -511,6 +717,28 @@ export default class GameView implements IGame {
     }
     gameResults.appendChild(correctAnswers);
     gameResults.appendChild(wrongAnswers);
+    const buttons: HTMLElement = document.createElement("div");
+    const newGameButton: HTMLElement = document.createElement("button");
+    newGameButton.id = `${this.type}-results-new-game-button`;
+    newGameButton.className = "game-results-button";
+    newGameButton.innerHTML = "Еще раз";
+    const backButton: HTMLElement = document.createElement("button");
+    backButton.id = `${this.type}-results-back-button`;
+    backButton.className = "game-results-button";
+    backButton.innerHTML = "На главную";
+    const onStartPage = new Control(
+      buttons,
+      "button",
+      "button route-btn route-btn_main",
+      "",
+      `${Buttons.onStartPage}`
+    );
+    onStartPage.node.onclick = () => {
+      this.onStartPage();
+    };
+    buttons.appendChild(newGameButton);
+    buttons.appendChild(backButton);
+    gameResults.appendChild(buttons);
     this.container.appendChild(gameResults);
   }
 
@@ -544,6 +772,8 @@ export default class GameView implements IGame {
   }
 
   async render(): Promise<void> {
+    console.log(this.group);
+    console.log(this.page);
     await this.renderTitle();
     if (!this.page && !this.group) {
       await this.renderDifficulty();

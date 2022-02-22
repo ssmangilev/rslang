@@ -134,6 +134,9 @@ export async function getUserWord(
       getNewTokens(userId);
       getUserWord(userId, wordId);
     }
+    if (response.status === 404) {
+      return null;
+    }
     const data: IUserWord = await response.json();
     return data;
   } catch (error) {
@@ -146,7 +149,7 @@ export async function getUserWords(
 ): Promise<IUserWord[] | unknown> {
   try {
     const response: Response = await fetch(
-      `${APIConstants.usersEndpoint}/${userId}/words}`,
+      `${APIConstants.usersEndpoint}/${userId}/words`,
       {
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
       }
@@ -170,7 +173,7 @@ export async function createUserWord(
   try {
     const responseBody = JSON.stringify(wordData);
     const response: Response = await fetch(
-      `${APIConstants.usersEndpoint}/${userId}/${wordId}`,
+      `${APIConstants.usersEndpoint}/${userId}/words/${wordId}`,
       {
         method: "POST",
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
@@ -196,7 +199,7 @@ export async function updateUserWord(
   try {
     const responseBody = JSON.stringify(wordData);
     const response: Response = await fetch(
-      `${APIConstants.usersEndpoint}/${userId}/${wordId}`,
+      `${APIConstants.usersEndpoint}/${userId}/words/${wordId}`,
       {
         method: "PUT",
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,
@@ -220,7 +223,7 @@ export async function deleteUserWord(
 ): Promise<void | unknown> {
   try {
     const response: Response = await fetch(
-      `${APIConstants.usersEndpoint}/${userId}/${wordId}`,
+      `${APIConstants.usersEndpoint}/${userId}/words/${wordId}`,
       {
         method: "DELETE",
         headers: APIConstants.HEADERS_FOR_REQUESTS_WITH_AUTH,

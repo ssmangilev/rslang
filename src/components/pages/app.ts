@@ -133,6 +133,25 @@ class Application extends Control {
         );
         this.mainCycle();
       };
+      textbookPage.onSprint = () => {
+        startPage.destroyСontent(
+          document.getElementById("main") as HTMLElement
+        );
+        const sprintPage = new SprintPage(
+          +(localStorage.getItem("textbookSection") || 0),
+          +(localStorage.getItem("textbookPage") || 1)
+        );
+      };
+
+      textbookPage.onAudioCall = () => {
+        startPage.destroyСontent(
+          document.getElementById("main") as HTMLElement
+        );
+        const audioCallPage = new AudioCallPage(
+          +(localStorage.getItem("textbookSection") || 0),
+          +(localStorage.getItem("textbookPage") || 1)
+        );
+      };
     };
 
     const eventService = new AppEventsService();

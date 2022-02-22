@@ -14,12 +14,12 @@ enum GamesEnum {
 }
 
 enum GameDifficulty {
-  easiest = "1",
-  easy = "2",
-  moreThenEasy = "3",
-  normal = "4",
-  hard = "5",
-  hardest = "6",
+  easiest = "0",
+  easy = "1",
+  moreThenEasy = "2",
+  normal = "3",
+  hard = "4",
+  hardest = "5",
 }
 
 interface IGame {
@@ -34,6 +34,7 @@ interface IGame {
   renderQuestion(question: IQuestion): void;
   renderSummary(rightAnswers: IQuestion[], wrongAnswers: IQuestion[]): void;
   startGame(): void;
+  updateWordStats(isRight: boolean, question: IQuestion): Promise<void>;
   render(): Promise<void>;
 }
 
@@ -144,6 +145,7 @@ interface IWordInGame {
 }
 
 interface IUserWordDetail {
+  isLearned?: string | boolean;
   isHard?: boolean;
   newWord?: string;
   sprint?: IWordInGame;
@@ -201,6 +203,11 @@ interface MyObjectsInterface {
   [key: string]: string;
 }
 
+interface IStatisticsView {
+  container: HTMLElement;
+  render(): void;
+}
+
 export {
   EndpointsEnum,
   GameDifficulty,
@@ -212,12 +219,15 @@ export {
   IModalWindow,
   IModalWindowElement,
   ISettings,
+  IStatisticsView,
   IStatistics,
   IQuestion,
   IUser,
   IUserExistsError,
   IUserEmailOrPasswordIncorrect,
   IUserWord,
+  IUserWordDetail,
+  IWordInGame,
   IWord,
   IAggregatedWords,
   CallbackType,
