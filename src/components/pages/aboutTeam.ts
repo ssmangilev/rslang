@@ -16,13 +16,16 @@ class AboutPage extends Control {
       <div class='info-container__content content'>
         <div class='content-card'>
           <div class='img-wrap'>
-            <img class='content-img' alt='' src='../../assets/team/photo1.jpg'>
+            <img class='content-img' alt='' src='https://avatars.githubusercontent.com/u/86509140?v=4'>
           </div>
           <div class='content-card__title'>Григорий Яворский</div>
           <a href='https://github.com/GrigoriyYav' class='content-card__github'>GrigoriyYav</a>
           <div class=''>Разработчик</div>
           <ul class='content-card__list list-task'>
-            <li class='list-task__item'>1. E-book</li>
+            <li class='list-task__item'>1. Архитектура</li>
+            <li class='list-task__item'>2. Учебник</li>
+            <li class='list-task__item'>3. О команде</li>
+            <li class='list-task__item'>4. Вёрстка</li>
           </ul>
         </div>
         <div class='content-card'>
@@ -34,6 +37,9 @@ class AboutPage extends Control {
           <div class=''>Разработчик</div>
           <ul class='content-card__list list-task'>
             <li class='list-task__item'>1. Backend</li>
+            <li class='list-task__item'>2. Регистрация</li>
+            <li class='list-task__item'>3. Спринт</li>
+            <li class='list-task__item'>4. Аудио-вызов</li>
           </ul>
         </div>
         <div class='content-card'>
@@ -45,6 +51,9 @@ class AboutPage extends Control {
           <div class=''>Разработчик</div>
           <ul class='content-card__list list-task'>
             <li class='list-task__item'>1. Верстка</li>
+            <li class='list-task__item'>2. Главная страница</li>
+            <li class='list-task__item'>3. Навигация</li>
+            <li class='list-task__item'></li>
           </ul>
         </div>
       </div>
