@@ -63,9 +63,9 @@ export default class StartPage extends Control {
       "statisticsPage"
     ) as HTMLElement;
     if (!localStorage.getItem("token")) {
-      if (statisticsBtn) statisticsBtn.style.visibility = "hidden";
+      if (statisticsBtn) statisticsBtn.style.display = "none";
     } else {
-      statisticsBtn.style.visibility = "visible";
+      statisticsBtn.style.display = "inline-block";
     }
   }
 
