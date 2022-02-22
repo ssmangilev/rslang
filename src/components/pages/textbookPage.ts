@@ -37,7 +37,7 @@ class TextbookPage extends Control {
     const onStartPage = new Control(
       textbookNavigation,
       "button",
-      "",
+      "button route-btn route-btn_main",
       "",
       `${Buttons.onStartPage}`
     );
@@ -45,7 +45,7 @@ class TextbookPage extends Control {
     const onSprintPage = new Control(
       textbookNavigation,
       "button",
-      "sprint-button-ebook",
+      "sprint-button-ebook button route-btn",
       "sprint-button-ebook",
       `${Buttons.onSprintPage}`,
       true
@@ -53,7 +53,7 @@ class TextbookPage extends Control {
     const onAudioCallPage = new Control(
       textbookNavigation,
       "button",
-      "audiocall-button-ebook",
+      "audiocall-button-ebook button route-btn",
       "audiocall-button-ebook",
       `${Buttons.onAudioCallPage}`,
       true

@@ -19,6 +19,10 @@
   flex: 1 1 auto;
   padding: 16px;
   padding-bottom: 24px;
+  position: relative;
+  &.studied {
+    background-color: aquamarine;
+  }
 }
 
 .card__image{
@@ -98,5 +102,37 @@ h5, h6{
     max-width: none;
     min-height: 150px;
     object-fit: scale-down;
+  }
+}
+
+.card__btns {
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  width: 30px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.card__btn {
+  width: 24px;
+  height: 24px;
+}
+
+.card__btn_studied {
+  background: url("../assets/svg/words-icon.svg") no-repeat;
+  &.selected {
+    background: url("../assets/svg/words-icon_selected.svg") no-repeat;
+  }
+}
+
+.card__btn_difficult {
+  background: url("../assets/svg/difficultWord-icon.svg") no-repeat;
+  &.selected {
+    background: url("../assets/svg/difficultWord-icon_selected.svg") no-repeat;
   }
 }
