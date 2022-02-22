@@ -3,10 +3,6 @@ import Buttons from "../configuration/buttons";
 import Links from "../configuration/links";
 import { createLink } from "../utils/utils";
 
-function audioGmae() {
-  console.log("Пример дальнейшего выполнения страницы");
-}
-
 export default class StartPage extends Control {
   onRegistration!: () => void;
   onProjectInfo!: () => void;
@@ -24,28 +20,19 @@ export default class StartPage extends Control {
   constructor() {
     super(null);
     this.main = <HTMLElement>document.getElementById("main");
-    this.render();
-    const registrButton = new Control(
-      document.getElementById("main-btns"),
-      "button",
-      "main__btn button",
-      "",
-      `${Buttons.onRegistration}`
-    );
-    registrButton.node.onclick = () => this.onRegistration();
 
-    const infoButton = new Control(
-      document.getElementById("main-btns"),
-      "button",
-      "main__btn button",
-      "",
-      `${Buttons.onProjectInfo}`
-    );
-    infoButton.node.onclick = () => {};
+    this.generateMainContent();
 
     this.createLink = createLink;
 
     this.navGeneration();
+
+    (
+      document.querySelector(".side-navigation__link_main") as HTMLElement
+    ).addEventListener("click", () => {
+      this.destroyСontent(document.getElementById("main") as HTMLElement);
+      this.generateMainContent();
+    });
     (
       document.querySelector(".side-navigation__link_ebook") as HTMLElement
     ).addEventListener("click", () => {
@@ -72,7 +59,14 @@ export default class StartPage extends Control {
       this.onStatPage();
     });
 
-    audioGmae(); /* An example of filling a class, it is also possible through methods */
+    const statisticsBtn = document.getElementById(
+      "statisticsPage"
+    ) as HTMLElement;
+    if (!localStorage.getItem("token")) {
+      if (statisticsBtn) statisticsBtn.style.display = "none";
+    } else {
+      statisticsBtn.style.display = "inline-block";
+    }
   }
 
   private navGeneration() {
@@ -90,5 +84,26 @@ export default class StartPage extends Control {
     btnsDiv.classList.add("main-ui__btns");
     btnsDiv.id = "main-btns";
     this.main.append(btnsDiv);
+  }
+
+  private generateMainContent() {
+    this.render();
+    const registrButtonApp = new Control(
+      document.getElementById("main-btns"),
+      "button",
+      "main__btn button",
+      "",
+      `${Buttons.onRegistration}`
+    );
+    registrButtonApp.node.onclick = () => this.onRegistration();
+
+    const infoButtonApp = new Control(
+      document.getElementById("main-btns"),
+      "button",
+      "main__btn button",
+      "",
+      `${Buttons.onProjectInfo}`
+    );
+    infoButtonApp.node.onclick = () => this.onProjectInfo();
   }
 }

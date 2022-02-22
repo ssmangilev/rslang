@@ -13,10 +13,20 @@ function createTesxtbookSectionSelect(parent: HTMLElement) {
   textbookSelectContainer.appendChild(textbookSectionSelect);
 
   for (let i = 0; i < textbookSections.length; i += 1) {
-    const option = document.createElement("option");
-    option.value = textbookSections[i];
-    option.text = textbookSections[i];
-    textbookSectionSelect.appendChild(option);
+    if (i !== textbookSections.length - 1) {
+      const option = document.createElement("option");
+      option.value = textbookSections[i];
+      option.text = textbookSections[i];
+      textbookSectionSelect.appendChild(option);
+    }
+    if (i === textbookSections.length - 1) {
+      if (localStorage.getItem("token")) {
+        const option = document.createElement("option");
+        option.value = textbookSections[i];
+        option.text = textbookSections[i];
+        textbookSectionSelect.appendChild(option);
+      }
+    }
   }
 }
 

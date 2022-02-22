@@ -8,9 +8,9 @@ import { createTextbookPagesSelect } from "../controllers/textbookPageSelect";
 class TextbookPage extends Control {
   onStartPage!: () => void;
 
-  onSprintPage!: () => void;
+  onSprint!: () => void;
 
-  onAudioCallPage!: () => void;
+  onAudioCall!: () => void;
 
   constructor() {
     super(null);
@@ -38,7 +38,7 @@ class TextbookPage extends Control {
       textbookNavigation,
       "button",
       "button route-btn route-btn_main",
-      "",
+      "textbook-on-start-page",
       `${Buttons.onStartPage}`
     );
 
@@ -63,9 +63,9 @@ class TextbookPage extends Control {
       this.onStartPage();
     };
 
-    onSprintPage.node.onclick = () => this.onSprintPage();
+    onSprintPage.node.onclick = () => this.onSprint();
 
-    onAudioCallPage.node.onload = () => this.onAudioCallPage();
+    onAudioCallPage.node.onclick = () => this.onAudioCall();
 
     createTesxtbookSectionSelect(textbookNavigation);
 
@@ -87,6 +87,7 @@ class TextbookPage extends Control {
       localStorage.getItem("textbookSection") === "0"
     ) {
       group = "0";
+      localStorage.setItem("textbookSection", "0");
       textbookSectionSelect.selectedIndex = 0;
       textbookSectionSelect.style.background = textbookSectionsColors["0"];
     } else {
@@ -105,6 +106,7 @@ class TextbookPage extends Control {
       localStorage.getItem("textbookPage") === "0"
     ) {
       page = "0";
+      localStorage.setItem("textbookPage", "0");
       textbookPagesSelect.selectedIndex = 0;
     } else {
       page = localStorage.getItem("textbookPage") as string;
