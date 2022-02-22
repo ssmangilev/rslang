@@ -108,3 +108,7 @@
 .audiocall-button-ebook::before {
   background: url('../assets/svg/headphones.svg');
 }
+.question-button-audiocall,
+.audiocall-without-answer-button {
+  background: rgba(0,0,0, .3);
+}
