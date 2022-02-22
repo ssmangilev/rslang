@@ -1,5 +1,6 @@
 import { getWords } from "../api/WordsEndpoint";
 import { IWord } from "../types/types";
+import Control from "./controls";
 
 async function cardsLoader(group: string, page: string) {
   const wordsData = await getWords(group, page);
@@ -9,9 +10,19 @@ async function cardsLoader(group: string, page: string) {
   wordsData.map((word: IWord) => {
     const cardContainer = document.createElement("div");
     cardContainer.classList.add("card-container");
+    cardsContainer?.append(cardContainer);
+
+    const cardImage = document.createElement("img");
+    cardImage.classList.add("card__image");
+    cardImage.setAttribute(
+      "src",
+      `https://rslangbackend.herokuapp.com/${word.image}`
+    );
+    cardContainer.append(cardImage);
 
     const cardText = document.createElement("div");
     cardText.classList.add("card-text");
+    cardContainer.append(cardText);
 
     const cardAudio = document.createElement("audio");
     const cardAudioBtn = document.createElement("div");
@@ -67,13 +78,6 @@ async function cardsLoader(group: string, page: string) {
       true
     );
 
-    const cardImage = document.createElement("img");
-    cardImage.classList.add("card__image");
-    cardImage.setAttribute(
-      "src",
-      `https://rslangbackend.herokuapp.com/${word.image}`
-    );
-
     const cardName = document.createElement("h5");
     cardName.classList.add("card__header");
     cardName.innerHTML = `${word.word}-${word.transcription}`;
@@ -98,9 +102,38 @@ async function cardsLoader(group: string, page: string) {
     textExampleTranslate.classList.add("card__text-example-translate");
     textExampleTranslate.innerHTML = `${word.textExampleTranslate}`;
 
-    cardsContainer?.append(cardContainer);
-    cardContainer.append(cardImage);
-    cardContainer.append(cardText);
+    const cardBtnsDiv = document.createElement("div");
+    cardBtnsDiv.id = `btns-container_${word.id}`;
+    cardBtnsDiv.classList.add(`card__btns`);
+    cardText.append(cardBtnsDiv);
+
+    const cardBtnDif = new Control(
+      document.getElementById(`btns-container_${word.id}`),
+      "span",
+      "card__btn button card__btn_difficult",
+      "",
+      "",
+      true
+    );
+
+    cardBtnDif.node.onclick = () => {
+      cardBtnDif.node.classList.toggle("selected");
+    };
+
+    const cardBtnStudied = new Control(
+      document.getElementById(`btns-container_${word.id}`),
+      "span",
+      "card__btn button card__btn_studied",
+      "",
+      "",
+      true
+    );
+
+    cardBtnStudied.node.onclick = () => {
+      cardBtnStudied.node.classList.toggle("selected");
+      cardText.classList.toggle("studied");
+    };
+
     cardText.append(cardName);
     cardName.append(cardAudioBtn);
     cardName.append(cardAudio);
