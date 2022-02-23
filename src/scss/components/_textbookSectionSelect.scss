@@ -1,0 +1,87 @@
+.textbook-select-container {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 20px;
+}
+
+.textbook-select-container select {
+  color: #000;
+  font-size: inherit;
+  padding: .5em;
+  padding-right: 2.5em;	
+  border: 0;
+  margin: 0;
+  border-radius: 3px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  -o-appearance: none;
+  -ms-appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+}
+.textbook-select-container select option:nth-of-type(1){
+  background-color: rgb(165, 214, 167);
+}
+.textbook-select-container select option:nth-of-type(2){
+  background-color: rgb(129, 212, 250);
+}
+.textbook-select-container select option:nth-of-type(3){
+  background-color: rgb(159, 168, 218);
+}
+.textbook-select-container select option:nth-of-type(4){
+  background-color: rgb(188, 170, 164);
+}
+.textbook-select-container select option:nth-of-type(5){
+  background-color: rgb(255, 204, 128);
+}
+.textbook-select-container select option:nth-of-type(6){
+  background-color: rgb(239, 154, 154);
+}
+.textbook-select-container select option:nth-of-type(7){
+  background-color: rgb(240, 70, 70);
+}
+
+
+.textbook-select-container::before,
+.textbook-select-container::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.textbook-select-container::after { /*  Custom dropdown arrow */
+  content: "\25BC";
+  height: 1em;
+  font-size: .625em;
+  line-height: 1;
+  right: 1.2em;
+  top: 50%;
+  margin-top: -.5em;
+}
+
+.textbook-select-container::before { /*  Custom dropdown arrow cover */
+  width: 2em;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 0 3px 3px 0;
+}
+
+.textbook-select-container select[disabled] {
+  color: rgba(0,0,0,.3);
+}
+
+.textbook-select-container select[disabled]::after {
+  color: rgba(0,0,0,.1);
+}
+
+.textbook-select-container::before {
+  background-color: rgba(0,0,0,.15);
+}
+
+.textbook-select-container::after {
+  color: rgba(0,0,0,.4);
+}

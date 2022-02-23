@@ -1,0 +1,32 @@
+/* Normalize css */
+@import '../../node_modules/normalize-scss/sass/_normalize.scss';
+@include normalize();
+/* Abstracts */
+@import 'abstracts/mixins';
+@import 'abstracts/variables';
+
+/* Base */
+@import 'base/body';
+@import 'base/main';
+/* Layout */
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/nav';
+@import 'layout/projectInfo.scss';
+@import 'layout/textbook';
+
+/* Components */
+@import 'components/buttons';
+@import 'components/textbookSectionSelect';
+@import 'components/textbookPageSelect';
+@import 'components/modal-window';
+@import 'components/loader';
+@import 'components/game';
+@import 'components/textbook';
+@import 'components/audioBtn';
+
+/* Pages */
+/* Themes */
+
+
+/* Vendors */
